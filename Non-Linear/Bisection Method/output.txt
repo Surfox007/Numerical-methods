@@ -1,0 +1,6 @@
+Root = -1.9999999999  Iterations = 26
+Root = 2.0000000001  Iterations = 26
+---------------
+Root = 1.5213797069  Iterations = 22
+All other roots are imaginary
+---------------
