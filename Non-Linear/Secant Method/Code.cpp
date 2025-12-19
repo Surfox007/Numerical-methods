@@ -4,7 +4,7 @@ using namespace std;
 #define ld long double
 
 const ld eps = 1e-9;
-
+// f(x)
 ld f(ld x, vector<pair<ld, ll>> &poly)
 {
     ld sum = 0;
@@ -61,31 +61,37 @@ int main()
         }
         for (auto [u, v] : interval)
         {
+            ld x0 = u;
+            ld x1 = v;
             ll iter = 0;
-            while (u <= v)
+
+            while (1)
             {
                 iter++;
-                ld mid = (u + v) / 2.0;
-                ld fmid = f(mid, poly);
+                ld f0 = f(x0, poly);
+                ld f1 = f(x1, poly);
 
-                if (fabsl(fmid) < eps)
+                if (fabsl(f1 - f0) < eps) // avoid division by zero
+                    break;
+
+                ld x2 = x1 - f1 * (x1 - x0) / (f1 - f0);
+
+                if (fabsl(x2 - x1) < eps)
                 {
                     cout << fixed << setprecision(10);
-                    cout << "Root = " << mid << "  Iterations = " << iter << "\n";
+                    cout << "Root = " << x2 << "  Iterations = " << iter << "\n";
                     break;
                 }
 
-                if (f(u, poly) * fmid < 0)
-                    v = mid;
-                else
-                    u = mid;
+                x0 = x1;
+                x1 = x2;
             }
         }
         if (interval.size() != n)
         {
             cout << "All other roots are imaginary\n";
         }
-        cout<<"---------------\n";
+        cout << "---------------\n";
     }
     return 0;
 }

@@ -5,7 +5,7 @@ using namespace std;
 
 const ld eps = 1e-9;
 
-ld f(ld x, vector<pair<ld, ll>> &poly)
+ld f(ld x, const vector<pair<ld, ll>> &poly)
 {
     ld sum = 0;
     for (auto [coeff, power] : poly)
@@ -65,7 +65,10 @@ int main()
             while (u <= v)
             {
                 iter++;
-                ld mid = (u + v) / 2.0;
+                ld fu = f(u, poly);
+                ld fv = f(v, poly);
+
+                ld mid = (u * fv - v * fu) / (fv - fu);
                 ld fmid = f(mid, poly);
 
                 if (fabsl(fmid) < eps)
@@ -85,7 +88,7 @@ int main()
         {
             cout << "All other roots are imaginary\n";
         }
-        cout<<"---------------\n";
+        cout << "---------------\n";
     }
     return 0;
 }

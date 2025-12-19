@@ -4,13 +4,25 @@ using namespace std;
 #define ld long double
 
 const ld eps = 1e-9;
-
+//f(x)
 ld f(ld x, vector<pair<ld, ll>> &poly)
 {
     ld sum = 0;
     for (auto [coeff, power] : poly)
     {
         sum += coeff * pow(x, power);
+    }
+    return sum;
+}
+
+// f'(x)
+ld df(ld x, vector<pair<ld, ll>> &poly)
+{
+    ld sum = 0;
+    for (auto [c, p] : poly)
+    {
+        if (p > 0)
+            sum += c * p * pow(x, p - 1);
     }
     return sum;
 }
@@ -61,31 +73,33 @@ int main()
         }
         for (auto [u, v] : interval)
         {
+            ld x = u;
             ll iter = 0;
-            while (u <= v)
+
+            while (1) 
             {
                 iter++;
-                ld mid = (u + v) / 2.0;
-                ld fmid = f(mid, poly);
+                ld fx = f(x, poly);
+                ld dfx = df(x, poly);
 
-                if (fabsl(fmid) < eps)
+                ld x1 = x - fx / dfx;
+
+                if (fabsl(x1 - x) < eps)
                 {
                     cout << fixed << setprecision(10);
-                    cout << "Root = " << mid << "  Iterations = " << iter << "\n";
+                    cout << "Root = " << x1
+                         << "  Iterations = " << iter << "\n";
                     break;
                 }
 
-                if (f(u, poly) * fmid < 0)
-                    v = mid;
-                else
-                    u = mid;
+                x = x1;
             }
         }
         if (interval.size() != n)
         {
             cout << "All other roots are imaginary\n";
         }
-        cout<<"---------------\n";
+        cout << "---------------\n";
     }
     return 0;
 }
