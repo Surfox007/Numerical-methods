@@ -64,7 +64,17 @@ This repository contains implementations of various numerical methods for solvin
     - [Code](#divided-difference-code)
     - [Input](#divided-difference-input)
     - [Output](#divided-difference-output)
-
+- [Solution of Numerical Differentiation](#solution-of-numerical-differentiation)
+  - [Differentiation by Forward Interpolation Method](#differentiation-by-forward-interpolation-method)
+    - [Theory](#differentiation-by-forward-interpolation-theory)
+    - [Code](#differentiation-by-forward-interpolation-code)
+    - [Input](#differentiation-by-forward-interpolation-input)
+    - [Output](#differentiation-by-forward-interpolation-output)
+  - [Differentiation by Forward Interpolation Method](#differentiation-by-backward-interpolation-method)
+    - [Theory](#differentiation-by-backward-interpolation-theory)
+    - [Code](#differentiation-by-backward-interpolation-position-code)
+    - [Input](#differentiation-by-backward-interpolation-input)
+    - [Output](#differentiation-by-backward-interpolation-output)
 - [Regression (Curve Fitting)](#regression-curve-fitting)
   - [Linear Regression](#linear-regression)
     - [Theory](#linear-regression-theory)
@@ -2213,7 +2223,380 @@ Value at 301.000000 : 2.478597
 ```
 
 ---
+#Numerical Differentiation
 
+###Differentiation by Forward Interpolation
+
+###Differentiation Forward Theory
+
+[Add your theory content here]
+
+###Differentiation Forward Code
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+ll fact(ll n)
+{
+    if (n <= 1)
+        return 1;
+    return n * fact(n - 1);
+}
+
+vector<ld> coef;
+
+// f(x)
+ld f(ld x)
+{
+    ld sum = 0;
+    for (ll i = 0; i < coef.size(); i++)
+        sum += coef[i] * pow(x, i);
+    return sum;
+}
+
+// f'(x)
+ld f1(ld x)
+{
+    ld sum = 0;
+    for (ll i = 1; i < coef.size(); i++)
+        sum += coef[i] * i * pow(x, i - 1);
+    return sum;
+}
+
+// f''(x)
+ld f2(ld x)
+{
+    ld sum = 0;
+    for (ll i = 2; i < coef.size(); i++)
+        sum += coef[i] * i * (i - 1) * pow(x, i - 2);
+    return sum;
+}
+
+// Difference table
+vector<vector<ld>> diff_table(vector<ld> &y)
+{
+    ll n = y.size();
+    vector<vector<ld>> diff(n, vector<ld>(n, 0));
+
+    for (ll i = 0; i < n; i++)
+        diff[i][0] = y[i];
+
+    for (ll j = 1; j < n; j++)
+        for (ll i = 0; i < n - j; i++)
+            diff[i][j] = diff[i + 1][j - 1] - diff[i][j - 1];
+
+    return diff;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    ll tc = 1;
+    ll n, deg;
+
+    while (cin >> n >> deg)
+    {
+        coef.assign(deg + 1, 0);
+        for (ll i = 0; i <= deg; i++)
+            cin >> coef[i];
+
+        ld a, b, X;
+        cin >> a >> b >> X;
+
+        ld h = (b - a) / n;
+
+        vector<ld> x(n), y(n);
+        for (ll i = 0; i < n; i++)
+        {
+            x[i] = a + i * h;
+            y[i] = f(x[i]);
+        }
+
+        vector<vector<ld>> diff = diff_table(y);
+        ld u = (X - x[0]) / h;
+
+        ld y1 = (diff[0][1] + (2 * u - 1) * diff[0][2] / fact(2) + (3 * u * u - 6 * u + 2) * diff[0][3] / fact(3)) / h;
+
+        ld y2 = (diff[0][2] + (u - 1) * diff[0][3]) / (h * h);
+
+        ld exact_y1 = f1(X);
+        ld exact_y2 = f2(X);
+
+        ld err1 = fabsl((exact_y1 - y1) / exact_y1) * 100;
+        ld err2 = fabsl((exact_y2 - y2) / exact_y2) * 100;
+
+        cout << "\nTEST CASE #" << tc++ << "\n";
+        cout << "n = " << n << ", degree = " << deg
+             << ", a = " << a << ", b = " << b << ", X = " << X << "\n";
+
+        cout << "Difference Table:\n";
+        for (ll i = 0; i < n; i++)
+        {
+            for (ll j = 0; j < n; j++)
+                cout << setw(12) << diff[i][j] << " ";
+            cout << "\n";
+        }
+
+        cout << fixed << setprecision(10);
+        cout << "Numerical y'  = " << y1 << "\n";
+        cout << "Numerical y'' = " << y2 << "\n";
+        cout << "Exact y'      = " << exact_y1 << "\n";
+        cout << "Exact y''     = " << exact_y2 << "\n";
+        cout << "First derivative error  = " << err1 << "%\n";
+        cout << "Second derivative error = " << err2 << "%\n";
+        cout << "---------------\n";
+    }
+
+    return 0;
+}
+```
+
+###Differentiation Forward Input
+```
+5 2
+1 0 3
+0 2 1
+4 2
+1 0 3
+0 2 1
+```
+###Differentiation Forward Output
+```
+
+TEST CASE #1
+n = 5, degree = 2, a = 0, b = 2, X = 1
+Difference Table:
+           1         0.48         0.96            0 -8.88178e-16 
+        1.48         1.44         0.96 -8.88178e-16            0 
+        2.92          2.4         0.96            0            0 
+        5.32         3.36            0            0            0 
+        8.68            0            0            0            0 
+Numerical y'  = 6.0000000000
+Numerical y'' = 6.0000000000
+Exact y'      = 6.0000000000
+Exact y''     = 6.0000000000
+First derivative error  = 0.0000000000%
+Second derivative error = 0.0000000000%
+---------------
+
+TEST CASE #2
+n = 4, degree = 2, a = 0.0000000000, b = 2.0000000000, X = 1.0000000000
+Difference Table:
+1.0000000000 0.7500000000 1.5000000000 0.0000000000 
+1.7500000000 2.2500000000 1.5000000000 0.0000000000 
+4.0000000000 3.7500000000 0.0000000000 0.0000000000 
+7.7500000000 0.0000000000 0.0000000000 0.0000000000 
+Numerical y'  = 6.0000000000
+Numerical y'' = 6.0000000000
+Exact y'      = 6.0000000000
+Exact y''     = 6.0000000000
+First derivative error  = 0.0000000000%
+Second derivative error = 0.0000000000%
+---------------
+```
+###Differentiation by Backward Interpolation
+
+###Differentiation Backward Theory
+
+[Add your theory content here]
+
+###Differentiation Backward Code
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+ld polyValue(const vector<ld>& coeff, ld x)
+{
+    ld val = 0, p = 1;
+    for (ld c : coeff)
+    {
+        val += c * p;
+        p *= x;
+    }
+    return val;
+}
+
+ld trueDerivative(const vector<ld>& coeff, ld x)
+{
+    ld val = 0;
+    for (ll i = 1; i < coeff.size(); i++)
+        val += i * coeff[i] * pow(x, i - 1);
+    return val;
+}
+
+vector<vector<ld>> buildBackwardDiffTable(const vector<ld>& y)
+{
+    ll n = y.size();
+    vector<vector<ld>> diff(n, vector<ld>(n, 0));
+    for (ll i = 0; i < n; i++) diff[i][0] = y[i];
+
+    for (ll j = 1; j < n; j++)
+        for (ll i = n - 1; i >= j; i--)
+            diff[i][j] = diff[i][j - 1] - diff[i - 1][j - 1];
+
+    return diff;
+}
+
+ld newtonBackwardDerivative5(const vector<vector<ld>>& diff, ld xn, ld h, ld xp, ll n)
+{
+    ld s = (xp - xn) / h;
+    ld der = 0;
+
+    if (n >= 2) der += diff[n - 1][1];
+    if (n >= 3) der += ((2 * s + 1) / 2.0) * diff[n - 1][2];
+    if (n >= 4) der += ((3 * s * s + 6 * s + 2) / 6.0) * diff[n - 1][3];
+    if (n >= 5) der += ((4 * s * s * s + 18 * s * s + 22 * s + 6) / 24.0) * diff[n - 1][4];
+    if (n >= 6) der += ((5 * s * s * s * s + 40 * s * s * s + 105 * s * s + 100 * s + 24) / 120.0) * diff[n - 1][5];
+
+    return der / h;
+}
+
+string polyString(const vector<ld>& c)
+{
+    stringstream ss;
+    bool first = true;
+
+    for (ll i = 0; i < c.size(); i++)
+    {
+        if (fabs(c[i]) < 1e-12) continue;
+        if (!first) ss << (c[i] >= 0 ? " + " : " - ");
+        else if (c[i] < 0) ss << "-";
+
+        ss << fixed << setprecision(4) << fabs(c[i]);
+        if (i == 1) ss << "x";
+        else if (i > 1) ss << "x^" << i;
+
+        first = false;
+    }
+
+    return ss.str();
+}
+
+int main()
+{
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n, deg;
+    ll tc = 1;
+
+    // EOF loop
+    while (cin >> n >> deg)
+    {
+        vector<ld> coeff(deg + 1);
+        for (ll i = 0; i <= deg; i++) cin >> coeff[i];
+
+        vector<ld> x(n), y(n);
+        for (ll i = 0; i < n; i++) cin >> x[i];
+
+        for (ll i = 0; i < n; i++) y[i] = polyValue(coeff, x[i]);
+
+        ld xp;
+        cin >> xp;
+
+        ld h = x[1] - x[0];
+        auto diff = buildBackwardDiffTable(y);
+
+        ld approx = newtonBackwardDerivative5(diff, x[n - 1], h, xp, n);
+        ld trueVal = trueDerivative(coeff, xp);
+        ld err = fabs((trueVal - approx) / trueVal) * 100.0;
+
+        string poly = polyString(coeff);
+
+        cout << "TEST CASE #" << tc++ << "\n";
+        cout << "Polynomial: f(x) = " << poly << "\n";
+        cout << "Number of points: " << n << "\n";
+
+        cout << "x-values: ";
+        for (ld v : x) cout << v << " ";
+        cout << "\n";
+
+        cout << "y-values: ";
+        for (ld v : y) cout << fixed << setprecision(6) << v << " ";
+        cout << "\n";
+
+        cout << fixed << setprecision(6);
+        cout << "Step size (h): " << h << "\n";
+        cout << "Differentiation point: " << xp << "\n";
+
+        cout << "Backward Difference Table:\n";
+        for (ll i = 0; i < n; i++)
+        {
+            cout << "Row " << i << ": ";
+            for (ll j = 0; j <= i; j++) cout << setw(12) << diff[i][j] << " ";
+            cout << "\n";
+        }
+
+        cout << "Approximate derivative: " << approx << "\n";
+        cout << "True derivative: " << trueVal << "\n";
+        cout << "Percentage error: " << err << " %\n";
+        cout << "---------------\n";
+    }
+
+    return 0;
+}
+```
+
+###Differentiation Backward Input
+```
+5 2
+1 0 2
+0 1 2 3 4
+2
+4 3
+0 1 0 1
+0 1 2 3 4
+1.5
+3 1
+2 3 1
+0 0.5 1.0
+0.5
+
+```
+###Differentiation Backward Output
+```
+TEST CASE #1
+Polynomial: f(x) = 1.0000 + 2.0000x^2
+Number of points: 5
+x-values: 0 1 2 3 4 
+y-values: 1.000000 3.000000 9.000000 19.000000 33.000000 
+Step size (h): 1.000000
+Differentiation point: 2.000000
+Backward Difference Table:
+Row 0:     1.000000 
+Row 1:     3.000000     2.000000 
+Row 2:     9.000000     6.000000     4.000000 
+Row 3:    19.000000    10.000000     4.000000     0.000000 
+Row 4:    33.000000    14.000000     4.000000     0.000000     0.000000 
+Approximate derivative: 8.000000
+True derivative: 8.000000
+Percentage error: 0.000000 %
+---------------
+TEST CASE #2
+Polynomial: f(x) = 1.0000x + 1.0000x^3
+Number of points: 4
+x-values: 0.000000 1.000000 2.000000 3.000000 
+y-values: 0.000000 2.000000 10.000000 30.000000 
+Step size (h): 1.000000
+Differentiation point: 4.000000
+Backward Difference Table:
+Row 0:     0.000000 
+Row 1:     2.000000     2.000000 
+Row 2:    10.000000     8.000000     6.000000 
+Row 3:    30.000000    20.000000    12.000000     6.000000 
+Approximate derivative: 49.000000
+True derivative: 49.000000
+Percentage error: 0.000000 %
+---------------
+
+```
 # Regression (Curve Fitting)
 
 ## Linear Regression
