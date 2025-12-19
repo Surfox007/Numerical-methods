@@ -66,15 +66,15 @@ This repository contains implementations of various numerical methods for solvin
     - [Output](#divided-difference-output)
 - [Numerical Differentiation](#numerical-differentiation)
   - [Differentiation by Forward Interpolation Method](#differentiation-by-forward-interpolation-method)
-    - [Theory](#differentiation-by-forward-interpolation-theory)
-    - [Code](#differentiation-by-forward-interpolation-code)
-    - [Input](#differentiation-by-forward-interpolation-input)
-    - [Output](#differentiation-by-forward-interpolation-output)
+    - [Theory](#differentiation-forward-theory)
+    - [Code](#differentiation-forward-code)
+    - [Input](#differentiation-forward-input)
+    - [Output](#differentiation-forward-output)
   - [Differentiation by Backward Interpolation Method](#differentiation-by-backward-interpolation-method)
-    - [Theory](#differentiation-by-backward-interpolation-theory)
-    - [Code](#differentiation-by-backward-interpolation-position-code)
-    - [Input](#differentiation-by-backward-interpolation-input)
-    - [Output](#differentiation-by-backward-interpolation-output)
+    - [Theory](#differentiation-backward-theory)
+    - [Code](#differentiation-backward-code)
+    - [Input](#differentiation-backward-input)
+    - [Output](#differentiation-backward-output)
 - [Regression (Curve Fitting)](#regression-curve-fitting)
   - [Linear Regression](#linear-regression)
     - [Theory](#linear-regression-theory)
@@ -2557,7 +2557,7 @@ int main()
 }
 ```
 
-###Differentiation Forward Input
+### Differentiation Forward Input
 ```
 5 2
 1 0 3
