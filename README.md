@@ -1,4 +1,30 @@
+# Numerical Methods Implementation
+
+This repository contains implementations of various numerical methods for solving mathematical problems, including linear and non-linear equations, interpolation, regression, integration, and ordinary differential equations.
+
 # Table of Contents
+
+- [Solution of Non-Linear Equations](#solution-of-non-linear-equations)
+  - [Bisection Method](#bisection-method)
+    - [Theory](#bisection-theory)
+    - [Code](#bisection-code)
+    - [Input](#bisection-input)
+    - [Output](#bisection-output)
+  - [False Position Method](#false-position-method)
+    - [Theory](#false-position-theory)
+    - [Code](#false-position-code)
+    - [Input](#false-position-input)
+    - [Output](#false-position-output)
+  - [Secant Method](#secant-method)
+    - [Theory](#secant-theory)
+    - [Code](#secant-code)
+    - [Input](#secant-input)
+    - [Output](#secant-output)
+  - [Newton Raphson Method](#newton-raphson-method)
+    - [Theory](#newton-raphson-theory)
+    - [Code](#newton-raphson-code)
+    - [Input](#newton-raphson-input)
+    - [Output](#newton-raphson-output)
 
 - [Solution of Linear Equations](#solution-of-linear-equations)
   - [Gauss Elimination Method](#gauss-elimination-method)
@@ -16,159 +42,693 @@
     - [Code](#lu-decomposition-code)
     - [Input](#lu-decomposition-input)
     - [Output](#lu-decomposition-output)
-  - [Matrix Inversion](#matrix-inversion)
-    - [Theory](#matrix-inversion-theory)
-    - [Code](#matrix-inversion-code)
-    - [Input](#matrix-inversion-input)
-    - [Output](#matrix-inversion-output)
 
-- [Solution of Non-Linear Equations](#solution-of-non-linear-equations)
-  - [Bisection Method](#bisection-method)
-    - [Theory](#bisection-theory)
-    - [Code](#bisection-code)
-    - [Input](#bisection-input)
-    - [Output](#bisection-output)
-  - [False Position Method](#false-position-method)
-    - [Theory](#false-position-theory)
-    - [Code](#false-position-code)
-    - [Input](#false-position-input)
-    - [Output](#false-position-output)
+- [Interpolation](#interpolation)
+  - [Newton's Forward Interpolation](#newtons-forward-interpolation)
+    - [Theory](#forward-interpolation-theory)
+    - [Code](#forward-interpolation-code)
+    - [Input](#forward-interpolation-input)
+    - [Output](#forward-interpolation-output)
+  - [Newton's Backward Interpolation](#newtons-backward-interpolation)
+    - [Theory](#backward-interpolation-theory)
+    - [Code](#backward-interpolation-code)
+    - [Input](#backward-interpolation-input)
+    - [Output](#backward-interpolation-output)
+  - [Divided Difference Interpolation](#divided-difference-interpolation)
+    - [Theory](#divided-difference-theory)
+    - [Code](#divided-difference-code)
+    - [Input](#divided-difference-input)
+    - [Output](#divided-difference-output)
+
+- [Regression (Curve Fitting)](#regression-curve-fitting)
+  - [Linear Regression](#linear-regression)
+    - [Theory](#linear-regression-theory)
+    - [Code](#linear-regression-code)
+    - [Input](#linear-regression-input)
+    - [Output](#linear-regression-output)
+  - [Transcendental Equation Regression](#transcendental-equation-regression)
+    - [Theory](#transcendental-regression-theory)
+    - [Code](#transcendental-regression-code)
+    - [Input](#transcendental-regression-input)
+    - [Output](#transcendental-regression-output)
+  - [Polynomial Regression](#polynomial-regression)
+    - [Theory](#polynomial-regression-theory)
+    - [Code](#polynomial-regression-code)
+    - [Input](#polynomial-regression-input)
+    - [Output](#polynomial-regression-output)
+
+- [Numerical Integration](#numerical-integration)
+  - [Simpson's 1/3rd Rule](#simpsons-13rd-rule)
+    - [Theory](#simpsons-13rd-theory)
+    - [Code](#simpsons-13rd-code)
+    - [Input](#simpsons-13rd-input)
+    - [Output](#simpsons-13rd-output)
+  - [Simpson's 3/8th Rule](#simpsons-38th-rule)
+    - [Theory](#simpsons-38th-theory)
+    - [Code](#simpsons-38th-code)
+    - [Input](#simpsons-38th-input)
+    - [Output](#simpsons-38th-output)
+
+- [Solution of Ordinary Differential Equations (ODE)](#solution-of-ordinary-differential-equations-ode)
+  - [Interpolation Method (ODE)](#interpolation-method-ode)
+    - [Theory](#ode-interpolation-theory)
+    - [Code](#ode-interpolation-code)
+    - [Input](#ode-interpolation-input)
+    - [Output](#ode-interpolation-output)
+  - [Runge-Kutta (RK) Method](#runge-kutta-rk-method)
+    - [Theory](#rk-method-theory)
+    - [Code](#rk-method-code)
+    - [Input](#rk-method-input)
+    - [Output](#rk-method-output)
 
 ---
 
-### Solution of Linear Equations
+# Solution of Non-Linear Equations
 
-### Gauss Elimination Method
+## Bisection Method
 
-#### Gauss Elimination Theory
+### Bisection Theory
 [Add your theory content here]
 
-#### Gauss Elimination Code
-```python
+### Bisection Code
+```cpp
 # Add your code here
+
 ```
 
-#### Gauss Elimination Input
+### Bisection Input
+
 ```
 [Add your input format here]
+
 ```
 
-#### Gauss Elimination Output
+### Bisection Output
+
 ```
 [Add your output format here]
+
 ```
 
 ---
 
-### Gauss Jordan Elimination Method
+## False Position Method
 
-#### Gauss Jordan Theory
+### False Position Theory
+
 [Add your theory content here]
 
-#### Gauss Jordan Code
+### False Position Code
+
 ```python
 # Add your code here
+
 ```
 
-#### Gauss Jordan Input
+### False Position Input
+
 ```
 [Add your input format here]
+
 ```
 
-#### Gauss Jordan Output
+### False Position Output
+
 ```
 [Add your output format here]
+
 ```
 
 ---
 
-### LU Decomposition Method
+## Secant Method
 
-#### LU Decomposition Theory
+### Secant Theory
+
 [Add your theory content here]
 
-#### LU Decomposition Code
+### Secant Code
+
 ```python
 # Add your code here
+
 ```
 
-#### LU Decomposition Input
+### Secant Input
+
 ```
 [Add your input format here]
+
 ```
 
-#### LU Decomposition Output
+### Secant Output
+
 ```
 [Add your output format here]
+
 ```
 
 ---
 
-### Matrix Inversion
+## Newton Raphson Method
 
-#### Matrix Inversion Theory
+### Newton Raphson Theory
+
 [Add your theory content here]
 
-#### Matrix Inversion Code
+### Newton Raphson Code
+
 ```python
 # Add your code here
+
 ```
 
-#### Matrix Inversion Input
+### Newton Raphson Input
+
 ```
 [Add your input format here]
+
 ```
 
-#### Matrix Inversion Output
+### Newton Raphson Output
+
 ```
 [Add your output format here]
+
 ```
 
 ---
 
-### Solution of Non-Linear Equations
+# Solution of Linear Equations
 
-### Bisection Method
+## Gauss Elimination Method
 
-#### Bisection Theory
+### Gauss Elimination Theory
+
 [Add your theory content here]
 
-#### Bisection Code
+### Gauss Elimination Code
+
 ```python
 # Add your code here
+
 ```
 
-#### Bisection Input
+### Gauss Elimination Input
+
 ```
 [Add your input format here]
+
 ```
 
-#### Bisection Output
+### Gauss Elimination Output
+
 ```
 [Add your output format here]
+
 ```
 
 ---
 
-### False Position Method
+## Gauss Jordan Elimination Method
 
-#### False Position Theory
+### Gauss Jordan Theory
+
 [Add your theory content here]
 
-#### False Position Code
+### Gauss Jordan Code
+
 ```python
 # Add your code here
+
 ```
 
-#### False Position Input
+### Gauss Jordan Input
+
 ```
 [Add your input format here]
+
 ```
 
-#### False Position Output
+### Gauss Jordan Output
+
 ```
 [Add your output format here]
+
 ```
 
 ---
 
+## LU Decomposition Method
+
+### LU Decomposition Theory
+
+[Add your theory content here]
+
+### LU Decomposition Code
+
+```python
+# Add your code here
+
+```
+
+### LU Decomposition Input
+
+```
+[Add your input format here]
+
+```
+
+### LU Decomposition Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+# Interpolation
+
+## Newton's Forward Interpolation
+
+### Forward Interpolation Theory
+
+[Add your theory content here]
+
+### Forward Interpolation Code
+
+```python
+# Add your code here
+
+```
+
+### Forward Interpolation Input
+
+```
+[Add your input format here]
+
+```
+
+### Forward Interpolation Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+## Newton's Backward Interpolation
+
+### Backward Interpolation Theory
+
+[Add your theory content here]
+
+### Backward Interpolation Code
+
+```python
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+
+double u_cal(double u, int n)
+{
+    double temp = u;
+    for (int i = 1; i < n; i++)
+    {
+        temp *= (u + i);
+    }
+    return temp;
+}
+
+double fact(int n)
+{
+    if (n == 1)
+        return 1;
+    return n * fact(n - 1);
+}
+
+double backward_interpolation(vector<double> &x, vector<vector<double>> &y, int n, int a)
+{
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = n - 1; j <= i; j++)
+        {
+            y[j][i] = y[j][i - 1] - y[j - 1][i - 1];
+        }
+    }
+
+    double u = (a - x[n - 1]) / (x[1] - x[0]);
+    double sum = y[n - 1][0];
+    for (int i = 1; i < n; i++)
+    {
+        sum += (u_cal(u, i) * y[n - 1][i]) / fact(i);
+    }
+    return sum;
+}
+
+int32_t main()
+{
+    ifstream inputFile("input.txt");
+    ofstream outputFile("output.txt", ios::trunc);
+    if (!inputFile.is_open())
+    {
+        cerr << "Error while opening input file" << endl;
+        return 1;
+    }
+
+    if (!outputFile.is_open())
+    {
+        cerr << "Error while opening output file" << endl;
+        inputFile.close();
+        return 1;
+    }
+
+    int n;
+    // cin>>n;
+    if (!(inputFile >> n))
+    {
+        cerr << "Error reading number of data points" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+    vector<double> x(n, 0);
+    vector<vector<double>> y(n, vector<double>(n, 0));
+    for (int i = 0; i < n; i++)
+    {
+        if (!(inputFile >> x[i] >> y[i][0]))
+        {
+            cerr << "Error reading data point " << i + 1 << endl;
+            inputFile.close();
+            outputFile.close();
+            return 1;
+        }
+        // cin >> x[i] >> y[i][0];
+    }
+    double a;
+    // cout << "Interpole at: ";
+    //  cin >> a;
+    if (!(inputFile >> a))
+    {
+        cerr << "Error reading interpolation point" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+    double ans = backward_interpolation(x, y, n, a);
+
+    outputFile << fixed << setprecision(4);
+    // printing backward difference table
+    for (int i = 0; i < n; i++)
+    {
+        // cout<<setw(4)<<x[i]<<"\t";
+        if (!(outputFile << setw(4) << x[i] << "\t"))
+        {
+            cerr << "Error writing output" << endl;
+            inputFile.close();
+            outputFile.close();
+            return 1;
+        }
+        for (int j = 0; j < n; j++)
+        {
+            // cout<<setw(4)<<y[i][j]<<"\t";
+            if (!(outputFile << setw(4) << y[i][j] << "\t"))
+            {
+                cerr << "Error writing output" << endl;
+                inputFile.close();
+                outputFile.close();
+                return 1;
+            }
+        }
+        outputFile << "\n";
+    }
+    // cout << ans << endl;
+    if (!(outputFile << "Interpole value at " << a << " = " << ans << endl))
+    {
+        cerr << "Error writing output" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+    return 0;
+}
+
+```
+
+### Backward Interpolation Input
+
+```
+[Add your input format here]
+
+```
+
+### Backward Interpolation Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+## Divided Difference Interpolation
+
+### Divided Difference Theory
+
+[Add your theory content here]
+
+### Divided Difference Code
+
+```python
+# Add your code here
+
+```
+
+### Divided Difference Input
+
+```
+[Add your input format here]
+
+```
+
+### Divided Difference Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+# Regression (Curve Fitting)
+
+## Linear Regression
+
+### Linear Regression Theory
+
+[Add your theory content here]
+
+### Linear Regression Code
+
+```python
+# Add your code here
+
+```
+
+### Linear Regression Input
+
+```
+[Add your input format here]
+
+```
+
+### Linear Regression Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+## Transcendental Equation Regression
+
+### Transcendental Regression Theory
+
+[Add your theory content here]
+
+### Transcendental Regression Code
+
+```python
+# Add your code here
+
+```
+
+### Transcendental Regression Input
+
+```
+[Add your input format here]
+
+```
+
+### Transcendental Regression Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+## Polynomial Regression
+
+### Polynomial Regression Theory
+
+[Add your theory content here]
+
+### Polynomial Regression Code
+
+```python
+# Add your code here
+
+```
+
+### Polynomial Regression Input
+
+```
+[Add your input format here]
+
+```
+
+### Polynomial Regression Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+# Numerical Integration
+
+## Simpson's 1/3rd Rule
+
+### Simpson's 1/3rd Theory
+
+[Add your theory content here]
+
+### Simpson's 1/3rd Code
+
+```python
+# Add your code here
+
+```
+
+### Simpson's 1/3rd Input
+
+```
+[Add your input format here]
+
+```
+
+### Simpson's 1/3rd Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+## Simpson's 3/8th Rule
+
+### Simpson's 3/8th Theory
+
+[Add your theory content here]
+
+### Simpson's 3/8th Code
+
+```python
+# Add your code here
+
+```
+
+### Simpson's 3/8th Input
+
+```
+[Add your input format here]
+
+```
+
+### Simpson's 3/8th Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+# Solution of Ordinary Differential Equations (ODE)
+
+## Interpolation Method (ODE)
+
+### ODE Interpolation Theory
+
+[Add your theory content here]
+
+### ODE Interpolation Code
+
+```python
+# Add your code here
+
+```
+
+### ODE Interpolation Input
+
+```
+[Add your input format here]
+
+```
+
+### ODE Interpolation Output
+
+```
+[Add your output format here]
+
+```
+
+---
+
+## Runge-Kutta (RK) Method
+
+### RK Method Theory
+
+[Add your theory content here]
+
+### RK Method Code
+
+```python
+# Add your code here
+
+```
+
+### RK Method Input
+
+```
+[Add your input format here]
+
+```
+
+### RK Method Output
+
+```
+[Add your output format here]
+
+```
+
+```
+
+```
