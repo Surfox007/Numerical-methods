@@ -318,22 +318,156 @@ This repository contains implementations of various numerical methods for solvin
 
 ### Forward Interpolation Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+
+double u_cal(double u, int n)
+{
+    double temp = u;
+    for (int i = 1; i < n; i++)
+    {
+        temp *= (u - i);
+    }
+    return temp;
+}
+
+int fact(int n)
+{
+    if (n == 1)
+        return 1;
+    return n * fact(n - 1);
+}
+
+int32_t main()
+{
+    ifstream inputFile("input.txt");
+    ofstream outputFile("output.txt", ios::trunc);
+    if (!inputFile.is_open())
+    {
+        cerr << "Error while opening input file" << endl;
+        return 1;
+    }
+
+    if (!outputFile.is_open())
+    {
+        cerr << "Error while opening output file" << endl;
+        inputFile.close();
+        return 1;
+    }
+    int n;
+    if (!(inputFile >> n))
+    {
+        cerr << "Error reading number of data points" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+    // cin>>n;
+    vector<vector<double>> y(n, vector<double>(n, 0));
+    vector<double> x(n, 0);
+    for (int i = 0; i < n; i++)
+    {
+        // cin>>x[i]>> y[i][0];
+        if (!(inputFile >> x[i] >> y[i][0]))
+        {
+            cerr << "Error reading data point " << i + 1 << endl;
+            inputFile.close();
+            outputFile.close();
+            return 1;
+        }
+    }
+
+    // forward difference
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = 0; j < n - i; j++)
+        {
+            y[j][i] = y[j + 1][i - 1] - y[j][i - 1];
+        }
+    }
+
+    outputFile << fixed << setprecision(4);
+
+    // forward difference table
+    for (int i = 0; i < n; i++)
+    {
+        // cout<<setw(4)<<x[i]<<"\t";
+        if (!(outputFile << setw(4) << x[i] << "\t"))
+        {
+            cerr << "Error writing output" << endl;
+            inputFile.close();
+            outputFile.close();
+            return 1;
+        }
+        for (int j = 0; j < n; j++)
+        {
+            // cout<<setw(4)<<y[i][j]<<"\t";
+            if (!(outputFile << setw(4) << y[i][j] << "\t"))
+            {
+                cerr << "Error writing output" << endl;
+                inputFile.close();
+                outputFile.close();
+                return 1;
+            }
+        }
+        outputFile << "\n";
+    }
+
+    double a;
+    // cout<<"Interpolate at: ";
+    // cin>> a;
+    if (!(inputFile >> a))
+    {
+        cerr << "Error reading interpolation point" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+
+    double sum = y[0][0];
+    double u = (a - x[0]) / (x[1] - x[0]);
+    for (int i = 1; i < n; i++)
+    {
+        sum += u_cal(u, i) * (1 / fact(i)) * y[0][1];
+    }
+
+    // cout<<"Value at "<<a<<": "<<sum<<endl;
+    if (!(outputFile << "Value at " << a << " = " << sum << endl))
+    {
+        cerr << "Error writing output" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+
+    return 0;
+}
+
 
 ```
 
 ### Forward Interpolation Input
 
 ```
-[Add your input format here]
+4
+45 0.7071
+50 0.766
+55 0.8192
+60 0.866
+52
 
 ```
 
 ### Forward Interpolation Output
 
 ```
-[Add your output format here]
+45.0000	0.7071	0.0589	-0.0057	-0.0007	
+50.0000	0.7660	0.0532	-0.0064	0.0000	
+55.0000	0.8192	0.0468	0.0000	0.0000	
+60.0000	0.8660	0.0000	0.0000	0.0000	
+Value at 52.0000 = 0.7896
 
 ```
 
@@ -347,7 +481,7 @@ This repository contains implementations of various numerical methods for solvin
 
 ### Backward Interpolation Code
 
-```python
+```cpp
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
@@ -480,14 +614,23 @@ int32_t main()
 ### Backward Interpolation Input
 
 ```
-[Add your input format here]
+4
+5 12
+6 13
+9 14
+11 16
+7
 
 ```
 
 ### Backward Interpolation Output
 
 ```
-[Add your output format here]
+5.0000	12.0000	0.0000	0.0000	0.0000	
+6.0000	13.0000	0.0000	0.0000	0.0000	
+9.0000	14.0000	0.0000	0.0000	0.0000	
+11.0000	16.0000	0.0000	0.0000	0.0000	
+Interpole value at 7.0000 = 16.0000
 
 ```
 
@@ -501,22 +644,150 @@ int32_t main()
 
 ### Divided Difference Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+
+double proterm(vector<double> &x, int n, double a)
+{
+    double temp = 1;
+    for (int i = 0; i < n; i++)
+    {
+        temp *= (a - x[i]);
+    }
+    return temp;
+}
+
+int32_t main()
+{
+    ifstream inputFile("input.txt");
+    
+    if (!inputFile.is_open())
+    {
+        cerr << "Error while opening input file" << endl;
+        return 1;
+    }
+    
+    int n;
+    // cin>>n;
+    if (!(inputFile >> n))
+    {
+        cerr << "Error reading number of data points" << endl;
+        inputFile.close();
+        return 1;
+    }
+    vector<vector<double>> y(n, vector<double>(n, 0));
+    vector<double> x(n, 0);
+    for (int i = 0; i < n; i++)
+    {
+        // cin>>x[i]>> y[i][0];
+        if (!(inputFile >> x[i] >> y[i][0]))
+        {
+            cerr << "Error reading data point " << i + 1 << endl;
+            inputFile.close();
+        
+            return 1;
+        }
+    }
+
+    // divided difference table
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = 0; j < n - i; j++)
+        {
+            y[j][i] = (y[j][i - 1] - y[j + 1][i - 1]) / (x[j] - x[j + i]);
+        }
+    }
+
+    //cout << fixed << setprecision(3);
+    ofstream outputFile ("output.txt", ios::trunc);
+    if (!outputFile.is_open())
+    {
+        cerr << "Error while opening output file" << endl;
+        inputFile.close();
+        return 1;
+    }
+    outputFile << fixed << setprecision(6);
+    // printing divided difference table
+    for (int i = 0; i < n; i++)
+    {
+        //cout << setw(7) << x[i] << "\t";
+        if (!(outputFile << setw(7) << x[i] << "\t"))
+        {
+            cerr << "Error writing to output file" << endl;
+            inputFile.close();
+            outputFile.close();
+            return 1;
+        }
+        for (int j = 0; j < n; j++)
+        {
+            //cout << setw(7) << y[i][j] << "\t";
+            if (!(outputFile << setw(7) << y[i][j] << "\t"))
+            {
+                cerr << "Error writing to output file" << endl;
+                inputFile.close();
+                outputFile.close();
+                return 1;
+            }
+        }
+        //cout << endl;
+        if (!(outputFile << endl))
+        {
+            cerr << "Error writing to output file" << endl;
+            inputFile.close();
+            outputFile.close();
+            return 1;
+        }
+    }
+
+    double a;
+    //cout << "Value  at: ";
+
+    //cin >> a;
+    if (!(inputFile >> a))
+    {
+        cerr << "Error reading interpolation point" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+
+    
+
+    double sum = y[0][0];
+    for (int i = 1; i < n; i++)
+    {
+        sum += proterm(x, i, a) * y[0][i];
+    }
+
+    //cout << "Value at " << a << ": " << sum << endl;
+    outputFile << "Value at " << a << " : "<< sum << endl;
+    return 0;
+}
 
 ```
 
 ### Divided Difference Input
 
 ```
-[Add your input format here]
+4
+300	2.4771
+304	2.4829
+305	2.4843
+307	2.4871
+301
 
 ```
 
 ### Divided Difference Output
 
 ```
-[Add your output format here]
+300.000000	2.477100	0.001450	-0.000010	0.000001	
+304.000000	2.482900	0.001400	-0.000000	0.000000	
+305.000000	2.484300	0.001400	0.000000	0.000000	
+307.000000	2.487100	0.000000	0.000000	0.000000	
+Value at 301.000000 : 2.478597
 
 ```
 
