@@ -123,6 +123,46 @@ This repository contains implementations of various numerical methods for solvin
 ## Bisection Method
 
 ### Bisection Theory
+The bisection method is a bracketing technique used to find the root of a nonlinear equation f(x) = 0.  
+
+It requires two initial guesses a and b such that f(a) and f(b) have opposite signs.  
+
+The interval is repeatedly halved, and the subinterval containing the root is selected for the next iteration.  
+
+This process continues until the root is approximated within a desired tolerance.
+
+
+
+#### Algorithm:
+
+**Step 1:** Choose interval \[a, b] such that f(a) \* f(b) < 0
+
+
+
+**Step 2:** Compute midpoint c = (a + b)/2
+
+
+
+**Step 3:** Evaluate f(c)
+
+
+
+If f(c) = 0, then c is the root
+
+
+
+If f(a) \* f(c) < 0, set b = c
+
+
+
+Else set a = c
+
+
+
+**Step 4:** Repeat until |b - a| < tolerance
+
+
+
 
 
 ### Bisection Code
@@ -256,7 +296,36 @@ All other roots are imaginary
 
 ### False Position Theory
 
-[Add your theory content here]
+The false position method is similar to the bisection method but instead of halving the interval,  
+it uses a linear interpolation between the endpoints to approximate the root.  
+The point where the secant line through `(a, f(a))` and `(b, f(b))` crosses the x-axis is taken as the new approximation.
+
+
+
+#### Algorithm:
+
+**Step 1:** Choose interval \[a, b] such that f(a) \* f(b) < 0
+
+
+
+**Step 2:** Compute root approximation:
+c = (af(b) - bf(a)) / (f(b) - f(a))
+
+
+
+**Step 3:** Evaluate f(c)
+
+If f(c) = 0, then c is the root
+
+If f(a) \* f(c) < 0, set b = c
+
+Else set a = c
+
+
+
+**Step 4:** Repeat until convergence
+
+
 
 ### False Position Code
 
@@ -393,7 +462,30 @@ All other roots are imaginary
 
 ### Secant Theory
 
-[Add your theory content here]
+The secant method is an iterative technique that uses two initial approximations of the root. The intersection of this line with the x-axis gives the next approximation.  
+Unlike bisection or false position, it does not require bracketing the root.
+
+
+
+#### Algorithm:
+
+**Step 1:** Choose two initial guesses x0 and x1
+
+
+
+**Step 2:** Compute next approximation:
+
+x2 = x1 - f(x1) \* (x1 - x0) / (f(x1) - f(x0))
+
+
+
+**Step 3:** Replace x0 = x1, x1 = x2
+
+
+
+**Step 4:** Repeat until |x2 - x1| < tolerance
+
+
 
 ### Secant Code
 
@@ -532,8 +624,31 @@ All other roots are imaginary
 ## Newton Raphson Method
 
 ### Newton Raphson Theory
+The Newton-Raphson method is an iterative technique that uses the tangent line at the current approximation  
+to estimate the root. It requires the derivative of the function.  
+The method converges very quickly near the root but may fail if the derivative is zero or the initial guess is poor.
 
-[Add your theory content here]
+
+
+#### Algorithm:
+
+**Step 1:** Choose initial guess x0
+
+
+
+**Step 2:** Compute next approximation:
+
+x1 = x0 - f(x0) / f'(x0)
+
+
+
+**Step 3:** Replace x0 = x1
+
+
+
+**Step 4:** Repeat until |x1 - x0| < tolerance
+
+
 
 ### Newton Raphson Code
 
