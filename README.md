@@ -113,7 +113,7 @@ This repository contains implementations of various numerical methods for solvin
 ## Bisection Method
 
 ### Bisection Theory
-[Add your theory content here]
+
 
 ### Bisection Code
 ```cpp
@@ -1329,7 +1329,110 @@ The system is inconsistent.
 
 ### Matrix Inversion Theory
 
-[Add your theory content here]
+
+For solving a linear equation we can implement: If A × X = B, then X = A⁻¹ × B
+
+
+
+Here:
+
+
+
+A = coefficient matrix
+
+
+
+X = vector of unknowns
+
+
+
+B = constants
+
+
+
+A⁻¹ = inverse of matrix A
+
+
+
+### **Algorithm:**
+
+
+
+**Step 1:** Write equations in matrix form A × X = B
+
+
+
+**Example:**
+
+2x + y = 5
+
+x + 3y = 10
+
+
+
+Matrix form:
+
+A = \[\[2, 1], \[1, 3]]
+
+X = \[\[x], \[y]]
+
+B = \[\[5], \[10]]
+
+
+
+**Step 2:** Find the inverse of A (A⁻¹)
+
+
+
+For a 2×2 matrix:
+
+A⁻¹ = (1 / (ad - bc)) × \[\[d, -b], \[-c, a]]
+
+
+
+**Here:**
+
+A = \[\[2, 1], \[1, 3]]
+
+Determinant = (2×3) - (1×1) = 6 - 1 = 5
+
+So A⁻¹ = (1/5) × \[\[3, -1], \[-1, 2]]
+
+
+
+**Step 3:** Multiply both sides by A⁻¹
+
+
+
+X = A⁻¹ × B
+
+
+
+X = (1/5) × \[\[3, -1], \[-1, 2]] × \[\[5], \[10]]
+
+
+
+**Step 4:** Do the multiplication
+
+
+
+X = (1/5) × \[\[(3×5) + (-1×10)], \[(-1×5) + (2×10)]]
+
+X = (1/5) × \[\[15 - 10], \[-5 + 20]]
+
+X = (1/5) × \[\[5], \[15]]
+
+X = \[\[1], \[3]]
+
+
+
+Final Answer:
+
+x = 1
+
+y = 3
+
+
 
 ### Matrix Inversion Code
 
