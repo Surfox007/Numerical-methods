@@ -105,11 +105,6 @@ This repository contains implementations of various numerical methods for solvin
     - [Output](#simpsons-38th-output)
 
 - [Solution of Ordinary Differential Equations (ODE)](#solution-of-ordinary-differential-equations-ode)
-  - [Interpolation Method (ODE)](#interpolation-method-ode)
-    - [Theory](#ode-interpolation-theory)
-    - [Code](#ode-interpolation-code)
-    - [Input](#ode-interpolation-input)
-    - [Output](#ode-interpolation-output)
   - [Runge-Kutta (RK) Method](#runge-kutta-rk-method)
     - [Theory](#rk-method-theory)
     - [Code](#rk-method-code)
@@ -1867,16 +1862,11 @@ Relies on **forward differences** starting from `x0`. Can also compute **numeric
 
 f(x) = f0 + uΔf0 + (u(u-1)/2!)Δ²f0 + (u(u-1)*(u-2)/3!)*Δ³f0 + ...
 
-markdown
-Copy code
-
 Where:
 - `u = (x - x0)/h`
 - `Δf0 = f1 - f0`, `Δ²f0 = Δf1 - Δf0`, etc.
 
----
-
-#### Algorithm
+##### Algorithm
 1. Arrange points `x0, x1, ..., xn` with spacing `h`.
 2. Build **forward difference table**.
 3. Compute `u = (x - x0)/h`.
@@ -2056,16 +2046,12 @@ Relies on **backward differences**. Can also be applied for **numerical derivati
 
 f(x) = fn + u*∇fn + (u*(u+1)/2!)∇²fn + (u(u+1)(u+2)/3!)∇³fn + ...
 
-markdown
-Copy code
 
 Where:
 - `u = (x - xn)/h`
 - `∇fn = fn - fn-1`, `∇²fn = ∇fn - ∇fn-1`, etc.
 
----
-
-#### Algorithm
+##### Algorithm
 1. Arrange points `x0, x1, ..., xn` with spacing `h`.
 2. Build **backward difference table** starting from `xn`.
 3. Compute `u = (x - xn)/h`.
@@ -2245,8 +2231,6 @@ Relies on **divided differences**, which generalize the concept of forward/backw
 
 f(x) = f[x0] + (x-x0)f[x0,x1] + (x-x0)(x-x1)f[x0,x1,x2] + ... + (x-x0)...(x-xn-1)f[x0,...,xn]
 
-sql
-Copy code
 
 Where:
 - `f[xi] = yi` (function values)
@@ -2254,12 +2238,7 @@ Where:
 - Higher-order differences are computed recursively:
 f[xi,...,xi+k] = (f[xi+1,...,xi+k] - f[xi,...,xi+k-1]) / (xi+k - xi)
 
-markdown
-Copy code
-
----
-
-#### Algorithm
+##### Algorithm
 1. Arrange points `x0, x1, ..., xn` with corresponding `y0, y1, ..., yn`.
 2. Construct the **divided difference table** recursively.
 3. Use the formula to estimate `f(x)` at the target point.
@@ -2433,9 +2412,6 @@ By differentiating the forward interpolation formula term by term, we can approx
 
 f'(x) ≈ (Δf0/h) + ((2u-1)/2!) * (Δ²f0/h) + ((3u²-6u+2)/3!) * (Δ³f0/h) + ...
 
-markdown
-Copy code
-
 Where:
 - `u = (x - x0)/h`  
 - `Δf0, Δ²f0, Δ³f0` are **forward differences**  
@@ -2444,13 +2420,7 @@ Where:
 **Formula for second derivative:**
 
 f''(x) ≈ (Δ²f0 / h²) + ((u-1) * Δ³f0 / h²) + ...
-
-markdown
-Copy code
-
----
-
-#### Algorithm
+##### Algorithm
 1. Arrange equally spaced points `x0, x1, ..., xn`.
 2. Construct the **forward difference table**.
 3. Compute `u = (x - x0)/h`.
@@ -2641,8 +2611,6 @@ By differentiating the backward interpolation formula term by term, we can appro
 
 f'(x) ≈ (∇f_n / h) + ((2u+1)/2!) * (∇²f_n / h) + ((3u²+6u+2)/3!) * (∇³f_n / h) + ...
 
-markdown
-Copy code
 
 Where:
 - `u = (x - xn)/h`  
@@ -2653,12 +2621,8 @@ Where:
 
 f''(x) ≈ (∇²f_n / h²) + ((u+1) * ∇³f_n / h²) + ...
 
-markdown
-Copy code
 
----
-
-#### Algorithm
+##### Algorithm
 1. Arrange equally spaced points `x0, x1, ..., xn`.
 2. Construct the **backward difference table** starting from `xn`.
 3. Compute `u = (x - xn)/h`.
@@ -3348,7 +3312,7 @@ Simpson’s 3/8 Rule is another numerical integration method. It approximates th
 
 
 
-#### Algorithm:
+##### Algorithm:
 
 **Step 1:** Divide the interval \[a, b] into n subintervals, where n must be a multiple of 3.
 
@@ -3543,35 +3507,6 @@ Result: 4.00000000
 ---
 
 # Solution of Ordinary Differential Equations (ODE)
-
-## Interpolation Method (ODE)
-
-### ODE Interpolation Theory
-
-[Add your theory content here]
-
-### ODE Interpolation Code
-
-```python
-# Add your code here
-
-```
-
-### ODE Interpolation Input
-
-```
-[Add your input format here]
-
-```
-
-### ODE Interpolation Output
-
-```
-[Add your output format here]
-
-```
-
----
 
 ## Runge-Kutta (RK) Method
 
