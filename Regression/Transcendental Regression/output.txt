@@ -1,0 +1,4 @@
+Exponential Regression: y = 0.9999575583 * e^(1.0000071456*x)
+---------------
+Exponential Regression: y = 2.0000000000 * e^(0.6931471806*x)
+---------------
