@@ -2868,7 +2868,51 @@ Percentage error: 0.000000 %
 
 ### Linear Regression Theory
 
-[Add your theory content here]
+Linear Regression is a statistical method used to model the relationship between two variables by fitting a straight line to the observed data.  
+The line is chosen such that the sum of squared differences between the observed values and the predicted values is minimized.  
+The general equation of the regression line is:
+
+**y = ax + b**
+
+where  
+
+a = slope of the line  
+
+b = intercept on the y-axis  
+
+
+
+The coefficients a and b are calculated using:
+
+a = (nΣ(xy) - ΣxΣy) / (nΣ(x²) - (Σx)²)
+
+b = (Σy - aΣx) / n
+
+
+
+#### Algorithm:
+
+**Step 1:** Collect n data points (x, y).
+
+
+
+**Step 2:** Compute Σx, Σy, Σxy, Σx².
+
+
+
+**Step 3:** Calculate slope (a) and intercept (b).
+
+
+
+**Step 4:** Form regression equation y = a\*x + b.
+
+
+
+**Step 5:** Use the equation to predict values.
+
+
+
+
 
 ### Linear Regression Code
 
@@ -2946,7 +2990,50 @@ Linear Regression: y = 2.0000000000 * x + 0.0000000000
 
 ### Transcendental Regression Theory
 
-[Add your theory content here]
+Transcendental Regression is used when the relationship between variables is exponential in nature.  
+The model assumes:
+
+**y = ae^(bx)**
+
+
+
+Taking natural logarithm:
+
+**ln(y) = ln(a) + bx**
+
+
+
+This reduces the problem to linear regression on (x, ln(y)).  
+
+Coefficients a and b are determined using least squares fitting.
+
+
+
+#### Algorithm
+
+**Step 1:** Collect n data points (x, y).
+
+
+
+**Step 2:** Transform data: Y = ln(y).
+
+
+
+**Step 3:** Apply linear regression on (x, Y).
+
+
+
+**Step 4:** Compute slope (b) and intercept (ln(a)).
+
+
+
+**Step 5:** Convert intercept back: a = e^(ln(a)).
+
+
+
+**Step 6:** Form regression equation y = a \* e^(b\*x).
+
+
 
 ### Transcendental Regression Code
 
@@ -3041,7 +3128,29 @@ Exponential Regression: y = 2.0000000000 * e^(0.6931471806*x)
 
 ### Polynomial Regression Theory
 
-[Add your theory content here]
+Polynomial Regression is used when the relationship between variables is nonlinear but can be approximated by a polynomial function.  
+The general form is:
+**y = a0 + a1x + a2x² + ... + ak\*x^k**
+where `k` is the degree of the polynomial.  
+Coefficients are determined using least squares fitting by solving a system of linear equations.
+
+
+
+#### Algorithm
+
+Step 1: Choose degree k of polynomial.
+
+Step 2: Collect n data points (x, y).
+
+Step 3: Form normal equations using Σx^m and Σ(x^m \* y).
+
+Step 4: Solve system of equations for coefficients a0, a1, ..., ak.
+
+Step 5: Construct regression polynomial y = a0 + a1x + ... + akx^k.
+
+Step 5: Use the polynomial to predict values.
+
+
 
 ### Polynomial Regression Code
 
