@@ -64,7 +64,7 @@ This repository contains implementations of various numerical methods for solvin
     - [Code](#divided-difference-code)
     - [Input](#divided-difference-input)
     - [Output](#divided-difference-output)
-- [Solution of Numerical Differentiation](#solution-of-numerical-differentiation)
+- [Numerical Differentiation](#numerical-differentiation)
   - [Differentiation by Forward Interpolation Method](#differentiation-by-forward-interpolation-method)
     - [Theory](#differentiation-by-forward-interpolation-theory)
     - [Code](#differentiation-by-forward-interpolation-code)
@@ -2223,15 +2223,15 @@ Value at 301.000000 : 2.478597
 ```
 
 ---
-#Numerical Differentiation
+# Numerical Differentiation
 
-###Differentiation by Forward Interpolation
+### Differentiation by Forward Interpolation Method
 
-###Differentiation Forward Theory
+### Differentiation Forward Theory
 
 [Add your theory content here]
 
-###Differentiation Forward Code
+### Differentiation Forward Code
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -2365,7 +2365,7 @@ int main()
 1 0 3
 0 2 1
 ```
-###Differentiation Forward Output
+### Differentiation Forward Output
 ```
 
 TEST CASE #1
@@ -2399,13 +2399,13 @@ First derivative error  = 0.0000000000%
 Second derivative error = 0.0000000000%
 ---------------
 ```
-###Differentiation by Backward Interpolation Method
+### Differentiation by Backward Interpolation Method
 
-###Differentiation Backward Theory
+### Differentiation Backward Theory
 
 [Add your theory content here]
 
-###Differentiation Backward Code
+### Differentiation Backward Code
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -2544,7 +2544,7 @@ int main()
 }
 ```
 
-###Differentiation Backward Input
+### Differentiation Backward Input
 ```
 5 2
 1 0 2
@@ -2560,7 +2560,7 @@ int main()
 0.5
 
 ```
-###Differentiation Backward Output
+### Differentiation Backward Output
 ```
 TEST CASE #1
 Polynomial: f(x) = 1.0000 + 2.0000x^2
