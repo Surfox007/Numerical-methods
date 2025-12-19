@@ -2513,7 +2513,18 @@ Polynomial Regression: y = 0.0000000000*x^0 + 2.0000000000*x^1
 
 ### Simpson's 1/3rd Theory
 
-[Add your theory content here]
+Simpson’s 1/3 Rule is a numerical integration method. It approximates the area under a curve by dividing the interval into an even number of subintervals through the points.
+
+#### Algorithm:
+
+**Step 1:** Divide the interval \[a, b] into n subintervals, where n must be even.
+**Step 2:** Compute the width of each subinterval:
+h = (b - a) / n
+**Step 3:** Apply the formula:
+
+Integral = (h/3) \* \[f(x0) + 4f(x1+x3+x5+....) + 2f(x2+x4+x6+....) + f(xn)]
+
+**Step 4:** Add up the terms to get the approximate value of the integral.
 
 ### Simpson's 1/3rd Code
 
@@ -2685,7 +2696,28 @@ Invalid function number
 
 ### Simpson's 3/8th Theory
 
-[Add your theory content here]
+Simpson’s 3/8 Rule is another numerical integration method. It approximates the area under a curve by dividing the interval into subintervals that are multiples of 3 through the points.
+
+
+
+#### Algorithm:
+
+**Step 1:** Divide the interval \[a, b] into n subintervals, where n must be a multiple of 3.
+
+
+**Step 2:** Compute the width of each subinterval:
+h = (b - a) / n
+
+
+**Step 3:** Apply the formula:
+
+Integral = (3h/8) \* \[f(x0) + 3f(x1+x2+x4+x5+...) + 2f(x3+x6+x9+......) + f(xn)]
+
+
+
+**Step 4:** Add up the terms to get the approximate value of the integral.
+
+
 
 ### Simpson's 3/8th Code
 
