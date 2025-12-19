@@ -1,0 +1,34 @@
+LU DECOMPOSITION - LINEAR EQUATION SOLVER
+==========================================
+
+========== TEST CASE 1 ==========
+System size: 3x3
+
+System Type:  UNIQUE SOLUTION
+
+Solution:
+x[0] = 2.000000
+x[1] = 3.000000
+x[2] = -1.000000
+
+========== TEST CASE 2 ==========
+System size: 2x2
+
+System Type:  UNIQUE SOLUTION
+
+Solution:
+x[0] = -4.000000
+x[1] = 4.500000
+
+========== TEST CASE 3 ==========
+System size: 3x3
+
+System Type: NO SOLUTION
+The system is inconsistent.
+
+========== TEST CASE 4 ==========
+System size: 3x3
+
+System Type: NO SOLUTION
+The system is inconsistent.
+
