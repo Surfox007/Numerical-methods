@@ -673,7 +673,56 @@ All other roots are imaginary
 
 ### Gauss Elimination Theory
 
-[Add your theory content here]
+Gauss Elimination is a method to solve systems of linear equations by transforming the coefficient matrix into an upper triangular form. Once in triangular form, the unknowns can be solved using back-substitution.
+
+
+
+#### Algorithm:
+
+
+
+**Step 1:** Write equations in matrix form A × X = B
+
+**Example:**
+2x + y - z = 8
+-3x - y + 2z = -11
+-2x + y + 2z = -3
+
+
+
+Matrix form:
+A = \[\[2, 1, -1], \[-3, -1, 2], \[-2, 1, 2]]
+X = \[\[x], \[y], \[z]]
+B = \[\[8], \[-11], \[-3]]
+
+
+
+**Step 2:** Transform A into upper triangular form
+
+Use row operations to eliminate variables below the diagonal.
+
+
+
+After elimination, the matrix looks like:
+
+\[\[2, 1, -1],
+\[0, -0.5, 0.5],
+\[0, 0, 1]]
+
+
+
+**Step 3:** Back-substitution
+
+Start from the last equation and solve upwards.
+
+Solve for z, then substitute into the second equation to find y, then substitute into the first to find x.
+
+
+
+**Final Answer:**
+x = 2, y = 3, z = -1
+
+
 
 ### Gauss Elimination Code
 ```cpp
@@ -854,7 +903,48 @@ System Type: NO SOLUTION
 
 ### Gauss Jordan Theory
 
-[Add your theory content here]
+Gauss-Jordan Elimination is an extension of Gauss Elimination. Instead of stopping at upper triangular form, it continues until the matrix is in reduced row echelon form. This makes the solution appear directly without back-substitution.
+
+
+
+#### Algorithm:
+
+**Step 1:** Write equations in matrix form A × X = B
+
+**Example:**
+Same system as before:
+2x + y - z = 8
+-3x - y + 2z = -11
+-2x + y + 2z = -3
+
+
+
+**Step 2:** Form the augmented matrix \[A|B]
+
+\[\[2, 1, -1 | 8],
+\[-3, -1, 2 | -11],
+\[-2, 1, 2 | -3]]
+
+
+
+**Step 3:** Apply row operations
+
+Make pivot elements = 1
+
+Eliminate all other entries in the pivot column (both above and below)
+
+Final matrix:
+
+\[\[1, 0, 0 | 2],
+\[0, 1, 0 | 3],
+\[0, 0, 1 | -1]]
+
+
+
+**Step 4:** Read off the solution directly
+x = 2, y = 3, z = -1
+
+
 
 ### Gauss Jordan Code
 
@@ -1048,7 +1138,52 @@ System Type: NO SOLUTION
 
 ### LU Decomposition Theory
 
-[Add your theory content here]
+LU Decomposition breaks a matrix A into the product of two matrices:
+A = L × U
+**Where:**
+
+L = Lower triangular matrix
+
+U = Upper triangular matrix
+
+This makes solving systems of equations easier and faster, especially for multiple right-hand sides.
+
+#### Algorithm:
+
+**Step 1:** Write equations in matrix form A × X = B
+
+**Example:**
+2x + y - z = 8
+-3x - y + 2z = -11
+-2x + y + 2z = -3
+
+Matrix form:
+A = \[\[2, 1, -1], \[-3, -1, 2], \[-2, 1, 2]]
+X = \[\[x], \[y], \[z]]
+B = \[\[8], \[-11], \[-3]]
+
+**Step 2:** Decompose A into L and U
+
+L is lower triangular (entries below diagonal)
+
+U is upper triangular (entries above diagonal)
+
+For this example:
+L = \[\[1, 0, 0], \[-1.5, 1, 0], \[-1, -1, 1]]
+U = \[\[2, 1, -1], \[0, 0.5, 0.5], \[0, 0, 1]]
+
+**Step 3:** Solve L × Y = B (forward substitution)
+
+Find intermediate vector Y.
+
+**Step 4:** Solve U × X = Y (back substitution)
+
+Find final solution vector X.
+
+Final Answer:
+x = 2, y = 3, z = -1
+
+
 
 ### LU Decomposition Code
 
