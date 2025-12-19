@@ -2929,7 +2929,35 @@ Result: 4.00000000
 
 ### RK Method Theory
 
-[Add your theory content here]
+Runge-Kutta methods are used to solve ordinary differential equations (ODEs). The most common is the 4th-order Runge-Kutta method (RK4), which gives a very accurate solution.
+
+#### 
+
+#### Algorithm:
+
+**Step 1:** Start with an initial condition (x0, y0).
+
+
+**Step 2:** Choose a step size h.
+
+
+**Step 3:** Compute four slopes:
+
+k1 = h \* f(x0, y0)
+k2 = h \* f(x0 + h/2, y0 + k1/2)
+k3 = h \* f(x0 + h/2, y0 + k2/2)
+k4 = h \* f(x0 + h, y0 + k3)
+
+
+
+**Step 4:** Update the solution:
+y1 = y0 + (1/6)(k1 + 2k2 + 2k3 + k4)
+
+
+
+**Step 5:** Repeat for the next step until the desired x is reached.
+
+
 
 ### RK Method Code
 
