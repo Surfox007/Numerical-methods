@@ -1047,22 +1047,275 @@ System Type: NO SOLUTION
 
 ### LU Decomposition Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const double EPSILON = 1e-9;
+
+bool isZero(double val) {
+    return fabs(val) < EPSILON;
+}
+
+bool luDecompose(vector<vector<double>>& A, vector<int>& P, int n) {
+    for (int i = 0; i < n; i++) {
+        P[i] = i;
+    }
+    
+    for (int k = 0; k < n; k++) {
+        double maxVal = 0;
+        int pivotRow = k;
+        for (int i = k; i < n; i++) {
+            if (fabs(A[i][k]) > maxVal) {
+                maxVal = fabs(A[i][k]);
+                pivotRow = i;
+            }
+        }
+
+        if (pivotRow != k) {
+            swap(A[k], A[pivotRow]);
+            swap(P[k], P[pivotRow]);
+        }
+        
+        if (isZero(A[k][k])) {
+            return false;
+        }
+        
+        for (int i = k + 1; i < n; i++) {
+            A[i][k] = A[i][k] / A[k][k];
+            for (int j = k + 1; j < n; j++) {
+                A[i][j] = A[i][j] - A[i][k] * A[k][j];
+            }
+        }
+    }
+    return true;
+}
+
+
+void forwardSubstitution(const vector<vector<double>>& LU, const vector<int>& P, 
+                         const vector<double>& b, vector<double>& y, int n) {
+    for (int i = 0; i < n; i++) {
+        y[i] = b[P[i]];
+        for (int j = 0; j < i; j++) {
+            y[i] -= LU[i][j] * y[j];
+        }
+    }
+}
+
+void backwardSubstitution(const vector<vector<double>>& LU, 
+                          const vector<double>& y, vector<double>& x, int n) {
+    for (int i = n - 1; i >= 0; i--) {
+        x[i] = y[i];
+        for (int j = i + 1; j < n; j++) {
+            x[i] -= LU[i][j] * x[j];
+        }
+        x[i] = x[i] / LU[i][i];
+    }
+}
+
+int checkSystemType(vector<vector<double>> A, vector<double> b, int n) {
+    vector<int> P(n);
+    vector<vector<double>> augmented = A;
+    
+    for (int i = 0; i < n; i++) {
+        augmented[i].push_back(b[i]);
+    }
+    
+    int rank_A = 0, rank_Ab = 0;
+    
+    for (int col = 0; col < n; col++) {
+        int pivotRow = -1;
+        for (int row = rank_A; row < n; row++) {
+            if (! isZero(A[row][col])) {
+                pivotRow = row;
+                break;
+            }
+        }
+        
+        if (pivotRow == -1) continue;
+        
+        if (pivotRow != rank_A) {
+            swap(A[rank_A], A[pivotRow]);
+            swap(augmented[rank_A], augmented[pivotRow]);
+        }
+
+        for (int row = rank_A + 1; row < n; row++) {
+            if (! isZero(A[row][col])) {
+                double factor = A[row][col] / A[rank_A][col];
+                for (int j = 0; j < n; j++) {
+                    A[row][j] -= factor * A[rank_A][j];
+                }
+                for (int j = 0; j <= n; j++) {
+                    augmented[row][j] -= factor * augmented[rank_A][j];
+                }
+            }
+        }
+        rank_A++;
+    }
+    
+    rank_Ab = rank_A;
+    for (int i = rank_A; i < n; i++) {
+        if (!isZero(augmented[i][n])) {
+            return 2; 
+        }
+    }
+    
+    if (rank_A < n) {
+        return 1;
+    }
+    
+    return 0;
+}
+
+void solveSystem(ifstream& input, ofstream& output, int testCase) {
+    int n;
+    input >> n;
+    
+    vector<vector<double>> A(n, vector<double>(n));
+    vector<double> b(n), x(n), y(n);
+    vector<int> P(n);
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            input >> A[i][j];
+        }
+    }
+    
+    for (int i = 0; i < n; i++) {
+        input >> b[i];
+    }
+    
+    output << "========== TEST CASE " << testCase << " ==========\n";
+    output << "System size: " << n << "x" << n << "\n\n";
+    
+    int systemType = checkSystemType(A, b, n);
+    
+    if (systemType == 2) {
+        output << "System Type: NO SOLUTION\n";
+        output << "The system is inconsistent.\n\n";
+        return;
+    } else if (systemType == 1) {
+        output << "System Type: INFINITE SOLUTIONS\n";
+        output << "The system has infinitely many solutions.\n\n";
+        return;
+    }
+    
+    output << "System Type:  UNIQUE SOLUTION\n\n";
+    vector<vector<double>> LU = A;
+    if (!luDecompose(LU, P, n)) {
+        output << "Error: Matrix is singular\n\n";
+        return;
+    }
+    
+    forwardSubstitution(LU, P, b, y, n);
+    backwardSubstitution(LU, y, x, n);
+    
+    output << "Solution:\n";
+    for (int i = 0; i < n; i++) {
+        output << "x[" << i << "] = " << fixed << setprecision(6) << x[i] << "\n";
+    }
+    output << "\n";
+}
+
+int main() {
+    ifstream input("input.txt");
+    ofstream output("output.txt");
+    
+    if (!input.is_open() || !output.is_open()) {
+        cerr << "Error opening files!\n";
+        return 1;
+    }
+    
+    int numTests;
+    input >> numTests;
+    
+    output << "LU DECOMPOSITION - LINEAR EQUATION SOLVER\n";
+    output << "==========================================\n\n";
+    
+    for (int i = 1; i <= numTests; i++) {
+        solveSystem(input, output, i);
+    }
+    
+    input.close();
+    output.close();
+    
+    cout << "LU decomposition completed.  Check lu_output.txt\n";
+    return 0;
+}
 
 ```
 
 ### LU Decomposition Input
 
 ```
-[Add your input format here]
+4
+3
+2 1 -1
+-3 -1 2
+-2 1 2
+8
+-11
+-3
+2
+1 2
+3 4
+5
+6
+3
+2 4 6
+1 2 3
+3 6 9
+1
+2
+3
+3
+1 0 0
+0 1 0
+0 0 0
+1
+2
+3
 
 ```
 
 ### LU Decomposition Output
 
 ```
-[Add your output format here]
+LU DECOMPOSITION - LINEAR EQUATION SOLVER
+==========================================
+
+========== TEST CASE 1 ==========
+System size: 3x3
+
+System Type:  UNIQUE SOLUTION
+
+Solution:
+x[0] = 2.000000
+x[1] = 3.000000
+x[2] = -1.000000
+
+========== TEST CASE 2 ==========
+System size: 2x2
+
+System Type:  UNIQUE SOLUTION
+
+Solution:
+x[0] = -4.000000
+x[1] = 4.500000
+
+========== TEST CASE 3 ==========
+System size: 3x3
+
+System Type: NO SOLUTION
+The system is inconsistent.
+
+========== TEST CASE 4 ==========
+System size: 3x3
+
+System Type: NO SOLUTION
+The system is inconsistent.
+
+
 
 ```
 
@@ -1856,22 +2109,165 @@ Polynomial Regression: y = 0.0000000000*x^0 + 2.0000000000*x^1
 
 ### Simpson's 1/3rd Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+
+
+double f1(double x) {
+    return x * x;  
+}
+
+double f2(double x) {
+    return 1.0 / (1.0 + x * x);  
+}
+
+double f3(double x) {
+    return sin(x);  
+}
+
+double f4(double x) {
+    return exp(x);  
+}
+
+double f5(double x) {
+    return sqrt(x);  
+}
+
+
+double simpsonsOneThird(double (*f)(double), double a, double b, int n) {
+    if (n % 2 != 0) {
+        n++;
+    }
+    
+    double h = (b - a) / n;
+    double sum = f(a) + f(b);
+    
+    for (int i = 1; i < n; i += 2) {
+        sum += 4 * f(a + i * h);
+    }
+    
+    for (int i = 2; i < n; i += 2) {
+        sum += 2 * f(a + i * h);
+    }
+    
+    return (h / 3.0) * sum;
+}
+
+int main() {
+    ifstream input("input.txt");
+    ofstream output("output.txt");
+    
+    if (!input.is_open() || !output.is_open()) {
+        cerr << "Error opening files!\n";
+        return 1;
+    }
+    
+    output << "SIMPSON'S 1/3 RULE INTEGRATION\n";
+    output << "===============================\n\n";
+    
+    int numTests;
+    input >> numTests;
+    
+    for (int t = 1; t <= numTests; t++) {
+        int funcNum, n;
+        double a, b;
+        
+        input >> funcNum >> a >> b >> n;
+        
+        output << "Test Case " << t << ":\n";
+        output << "Function: f" << funcNum << "\n";
+        output << "Limits: [" << a << ", " << b << "]\n";
+        output << "Intervals: " << n << "\n";
+        
+        double result;
+        switch(funcNum) {
+            case 1: result = simpsonsOneThird(f1, a, b, n); 
+                    output << "f(x) = x^2\n"; break;
+            case 2: result = simpsonsOneThird(f2, a, b, n);
+                    output << "f(x) = 1/(1+x^2)\n"; break;
+            case 3: result = simpsonsOneThird(f3, a, b, n);
+                    output << "f(x) = sin(x)\n"; break;
+            case 4: result = simpsonsOneThird(f4, a, b, n);
+                    output << "f(x) = e^x\n"; break;
+            case 5: result = simpsonsOneThird(f5, a, b, n);
+                    output << "f(x) = sqrt(x)\n"; break;
+            default: 
+                output << "Invalid function number\n\n";
+                continue;
+        }
+        
+        output << "Result: " << fixed << setprecision(8) << result << "\n\n";
+    }
+    
+    input.close();
+    output.close();
+    
+    cout << "Simpson's 1/3 rule completed. Check simpson_one_third_output.txt\n";
+    return 0;
+}
 
 ```
 
 ### Simpson's 1/3rd Input
 
 ```
-[Add your input format here]
+6
+1 0 1 6
+2 0 1 9
+3 0 3.14159265 9
+4 0 1 12
+5 1 4 9
+6 0 2 6
 
 ```
 
 ### Simpson's 1/3rd Output
 
-```
-[Add your output format here]
+```SIMPSON'S 1/3 RULE INTEGRATION
+===============================
+
+Test Case 1:
+Function: f1
+Limits: [0, 1]
+Intervals: 6
+f(x) = x^2
+Result: 0.33333333
+
+Test Case 2:
+Function: f2
+Limits: [0.00000000, 1.00000000]
+Intervals: 9
+f(x) = 1/(1+x^2)
+Result: 0.78539815
+
+Test Case 3:
+Function: f3
+Limits: [0.00000000, 3.14159265]
+Intervals: 9
+f(x) = sin(x)
+Result: 2.00010952
+
+Test Case 4:
+Function: f4
+Limits: [0.00000000, 1.00000000]
+Intervals: 12
+f(x) = e^x
+Result: 1.71828229
+
+Test Case 5:
+Function: f5
+Limits: [1.00000000, 4.00000000]
+Intervals: 9
+f(x) = sqrt(x)
+Result: 4.66665163
+
+Test Case 6:
+Function: f6
+Limits: [0.00000000, 2.00000000]
+Intervals: 6
+Invalid function number
 
 ```
 
@@ -1885,22 +2281,174 @@ Polynomial Regression: y = 0.0000000000*x^0 + 2.0000000000*x^1
 
 ### Simpson's 3/8th Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+
+double f1(double x) {
+    return x * x;  
+}
+
+double f2(double x) {
+    return 1.0 / (1.0 + x * x);
+}
+
+double f3(double x) {
+    return sin(x); 
+}
+
+double f4(double x) {
+    return exp(x);  
+}
+
+double f5(double x) {
+    return sqrt(x);
+}
+
+double f6(double x) {
+    return x * x * x; 
+}
+
+
+double simpsonsThreeEighth(double (*f)(double), double a, double b, int n) {
+    while (n % 3 != 0) {
+        n++;
+    }
+    
+    double h = (b - a) / n;
+    double sum = f(a) + f(b);
+    
+    for (int i = 1; i < n; i++) {
+        if (i % 3 == 0) {
+            sum += 2 * f(a + i * h);
+        } else {
+            sum += 3 * f(a + i * h);
+        }
+    }
+    
+    return (3.0 * h / 8.0) * sum;
+}
+
+int main() {
+    ifstream input("input.txt");
+    ofstream output("output.txt");
+    
+    if (!input.is_open() || !output.is_open()) {
+        cerr << "Error opening files!\n";
+        return 1;
+    }
+    
+    output << "SIMPSON'S 3/8 RULE INTEGRATION\n";
+    output << "===============================\n\n";
+    
+    int numTests;
+    input >> numTests;
+    
+    for (int t = 1; t <= numTests; t++) {
+        int funcNum, n;
+        double a, b;
+        
+        input >> funcNum >> a >> b >> n;
+        
+        output << "Test Case " << t << ":\n";
+        output << "Function: f" << funcNum << "\n";
+        output << "Limits:  [" << a << ", " << b << "]\n";
+        output << "Intervals: " << n << "\n";
+        
+        double result;
+        switch(funcNum) {
+            case 1: result = simpsonsThreeEighth(f1, a, b, n); 
+                    output << "f(x) = x^2\n"; break;
+            case 2: result = simpsonsThreeEighth(f2, a, b, n);
+                    output << "f(x) = 1/(1+x^2)\n"; break;
+            case 3: result = simpsonsThreeEighth(f3, a, b, n);
+                    output << "f(x) = sin(x)\n"; break;
+            case 4: result = simpsonsThreeEighth(f4, a, b, n);
+                    output << "f(x) = e^x\n"; break;
+            case 5: result = simpsonsThreeEighth(f5, a, b, n);
+                    output << "f(x) = sqrt(x)\n"; break;
+            case 6: result = simpsonsThreeEighth(f6, a, b, n);
+                    output << "f(x) = x^3\n"; break;
+            default: 
+                output << "Invalid function number\n\n";
+                continue;
+        }
+        
+        output << "Result: " << fixed << setprecision(8) << result << "\n\n";
+    }
+    
+    input.close();
+    output.close();
+    
+    cout << "Simpson's 3/8 rule completed. Check simpson_three_eighth_output. txt\n";
+    return 0;
+}
 
 ```
 
 ### Simpson's 3/8th Input
 
 ```
-[Add your input format here]
+6
+1 0 1 6
+2 0 1 9
+3 0 3.14159265 9
+4 0 1 12
+5 1 4 9
+6 0 2 6
 
 ```
 
 ### Simpson's 3/8th Output
 
 ```
-[Add your output format here]
+SIMPSON'S 3/8 RULE INTEGRATION
+===============================
+
+Test Case 1:
+Function: f1
+Limits:  [0, 1]
+Intervals: 6
+f(x) = x^2
+Result: 0.33333333
+
+Test Case 2:
+Function: f2
+Limits:  [0.00000000, 1.00000000]
+Intervals: 9
+f(x) = 1/(1+x^2)
+Result: 0.78539808
+
+Test Case 3:
+Function: f3
+Limits:  [0.00000000, 3.14159265]
+Intervals: 9
+f(x) = sin(x)
+Result: 2.00038224
+
+Test Case 4:
+Function: f4
+Limits:  [0.00000000, 1.00000000]
+Intervals: 12
+f(x) = e^x
+Result: 1.71828286
+
+Test Case 5:
+Function: f5
+Limits:  [1.00000000, 4.00000000]
+Intervals: 9
+f(x) = sqrt(x)
+Result: 4.66661964
+
+Test Case 6:
+Function: f6
+Limits:  [0.00000000, 2.00000000]
+Intervals: 6
+f(x) = x^3
+Result: 4.00000000
+
+
 
 ```
 
