@@ -1860,7 +1860,33 @@ int32_t main(){
 
 ### Forward Interpolation Theory
 
-[Add your theory content here]
+Used to estimate `f(x)` at a point using **equally spaced data points**.  
+Relies on **forward differences** starting from `x0`. Can also compute **numerical derivatives**.
+
+**Formula:**
+
+f(x) = f0 + uΔf0 + (u(u-1)/2!)Δ²f0 + (u(u-1)*(u-2)/3!)*Δ³f0 + ...
+
+markdown
+Copy code
+
+Where:
+- `u = (x - x0)/h`
+- `Δf0 = f1 - f0`, `Δ²f0 = Δf1 - Δf0`, etc.
+
+---
+
+#### Algorithm
+1. Arrange points `x0, x1, ..., xn` with spacing `h`.
+2. Build **forward difference table**.
+3. Compute `u = (x - x0)/h`.
+4. Apply formula to estimate `f(x)`.
+5. *(Optional)* Use formula derivatives for numerical derivatives.
+
+**Notes:**  
+- Requires equally spaced points.  
+- Higher-order differences → more accurate.  
+- At least 2 points needed for first-order.
 
 ### Forward Interpolation Code
 
@@ -2023,7 +2049,33 @@ Value at 52.0000 = 0.7896
 
 ### Backward Interpolation Theory
 
-[Add your theory content here]
+Used to estimate `f(x)` at a point using **equally spaced data points**, starting from the **last data point xn**.  
+Relies on **backward differences**. Can also be applied for **numerical derivatives**.
+
+**Formula:**
+
+f(x) = fn + u*∇fn + (u*(u+1)/2!)∇²fn + (u(u+1)(u+2)/3!)∇³fn + ...
+
+markdown
+Copy code
+
+Where:
+- `u = (x - xn)/h`
+- `∇fn = fn - fn-1`, `∇²fn = ∇fn - ∇fn-1`, etc.
+
+---
+
+#### Algorithm
+1. Arrange points `x0, x1, ..., xn` with spacing `h`.
+2. Build **backward difference table** starting from `xn`.
+3. Compute `u = (x - xn)/h`.
+4. Apply the formula to estimate `f(x)`.
+5. *(Optional)* Use derivatives of the formula for **numerical derivatives**.
+
+**Notes:**  
+- Requires equally spaced points.  
+- Higher-order differences → more accurate.  
+- Useful when estimating near the **end of the dataset**.
 
 ### Backward Interpolation Code
 
@@ -2186,7 +2238,37 @@ Interpole value at 7.0000 = 16.0000
 
 ### Divided Difference Theory
 
-[Add your theory content here]
+Used to estimate `f(x)` at a point using **unequally spaced data points**.  
+Relies on **divided differences**, which generalize the concept of forward/backward differences.
+
+**Formula:**
+
+f(x) = f[x0] + (x-x0)f[x0,x1] + (x-x0)(x-x1)f[x0,x1,x2] + ... + (x-x0)...(x-xn-1)f[x0,...,xn]
+
+sql
+Copy code
+
+Where:
+- `f[xi] = yi` (function values)
+- `f[xi,xj] = (f[xj]-f[xi]) / (xj - xi)` (first divided difference)
+- Higher-order differences are computed recursively:
+f[xi,...,xi+k] = (f[xi+1,...,xi+k] - f[xi,...,xi+k-1]) / (xi+k - xi)
+
+markdown
+Copy code
+
+---
+
+#### Algorithm
+1. Arrange points `x0, x1, ..., xn` with corresponding `y0, y1, ..., yn`.
+2. Construct the **divided difference table** recursively.
+3. Use the formula to estimate `f(x)` at the target point.
+4. *(Optional)* Higher-order divided differences improve accuracy.
+
+**Notes:**  
+- Works for **unequally spaced points**.  
+- Reduces to **forward/backward difference** when points are equally spaced.  
+- Useful for **general interpolation** and **polynomial construction**.
 
 ### Divided Difference Code
 
@@ -2340,11 +2422,45 @@ Value at 301.000000 : 2.478597
 ---
 # Numerical Differentiation
 
-### Differentiation by Forward Interpolation Method
+## Differentiation by Forward Interpolation Method
 
 ### Differentiation Forward Theory
 
-[Add your theory content here]
+Newton’s Forward Interpolation can also be used to **numerically differentiate** a function `f(x)` at a point using **equally spaced data points**.  
+By differentiating the forward interpolation formula term by term, we can approximate **first and higher-order derivatives**.
+
+**Formula for first derivative:**
+
+f'(x) ≈ (Δf0/h) + ((2u-1)/2!) * (Δ²f0/h) + ((3u²-6u+2)/3!) * (Δ³f0/h) + ...
+
+markdown
+Copy code
+
+Where:
+- `u = (x - x0)/h`  
+- `Δf0, Δ²f0, Δ³f0` are **forward differences**  
+- `h` is the step size  
+
+**Formula for second derivative:**
+
+f''(x) ≈ (Δ²f0 / h²) + ((u-1) * Δ³f0 / h²) + ...
+
+markdown
+Copy code
+
+---
+
+#### Algorithm
+1. Arrange equally spaced points `x0, x1, ..., xn`.
+2. Construct the **forward difference table**.
+3. Compute `u = (x - x0)/h`.
+4. Apply the **differentiated forward formula** to estimate derivatives at `x`.
+5. Increase order of differences for higher accuracy.
+
+**Notes:**  
+- Step size `h` must be constant.  
+- Higher-order differences improve accuracy.  
+- Works best near the **beginning of the dataset**.
 
 ### Differentiation Forward Code
 ```cpp
@@ -2516,9 +2632,43 @@ Second derivative error = 0.0000000000%
 ```
 ### Differentiation by Backward Interpolation Method
 
-### Differentiation Backward Theory
+## Differentiation Backward Theory
 
-[Add your theory content here]
+Newton’s Backward Interpolation can be used to **numerically differentiate** a function `f(x)` at a point using **equally spaced data points**, starting from the **last data point xn**.  
+By differentiating the backward interpolation formula term by term, we can approximate **first and higher-order derivatives**.
+
+**Formula for first derivative:**
+
+f'(x) ≈ (∇f_n / h) + ((2u+1)/2!) * (∇²f_n / h) + ((3u²+6u+2)/3!) * (∇³f_n / h) + ...
+
+markdown
+Copy code
+
+Where:
+- `u = (x - xn)/h`  
+- `∇f_n, ∇²f_n, ∇³f_n` are **backward differences**  
+- `h` is the step size  
+
+**Formula for second derivative:**
+
+f''(x) ≈ (∇²f_n / h²) + ((u+1) * ∇³f_n / h²) + ...
+
+markdown
+Copy code
+
+---
+
+#### Algorithm
+1. Arrange equally spaced points `x0, x1, ..., xn`.
+2. Construct the **backward difference table** starting from `xn`.
+3. Compute `u = (x - xn)/h`.
+4. Apply the **differentiated backward formula** to estimate derivatives at `x`.
+5. Use higher-order differences for increased accuracy.
+
+**Notes:**  
+- Step size `h` must be constant.  
+- Higher-order differences improve accuracy.  
+- Works best near the **end of the dataset**.
 
 ### Differentiation Backward Code
 ```cpp
