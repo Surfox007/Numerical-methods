@@ -42,6 +42,11 @@ This repository contains implementations of various numerical methods for solvin
     - [Code](#lu-decomposition-code)
     - [Input](#lu-decomposition-input)
     - [Output](#lu-decomposition-output)
+  - [Matrix Inversion Method](#matrix-inversion-method)
+    - [Theory](#matrix-inversion-theory)
+    - [Code](#matrix-inversion-code)
+    - [Input](#matrix-inversion-input)
+    - [Output](#matrix-inversion-output)
 
 - [Interpolation](#interpolation)
   - [Newton's Forward Interpolation](#newtons-forward-interpolation)
@@ -898,6 +903,171 @@ System Type: NO SOLUTION
 
 ```
 [Add your output format here]
+
+```
+
+---
+## Matrix Inversion Method
+
+### Matrix Inversion Theory
+
+[Add your theory content here]
+
+### Matrix Inversion Code
+
+```cpp
+#include <bits/stdc++.h>
+#define int long long
+const double EPSILON = 1e-9;
+using namespace std;
+
+void get_submatrix(vector<vector<double>> mat, vector<vector<double>> &temp, int p, int q, int n)
+{
+    int r = 0;
+    for (int i = 0; i < n; i++){
+        if (i != p){
+            int s = 0;
+            for (int j = 0; j < n; j++){
+                if (j != q){
+                    temp[r][s++] = mat[i][j];
+                }
+            }
+
+            r++;
+        }
+    }
+}
+
+double get_determinant(vector<vector<double>> mat, int n)
+{
+    if (n == 1){
+        return mat[0][0];
+    }
+
+    if (n == 2){
+        return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0];
+    }
+
+    int D = 0;
+    int sign = 1;
+    vector<vector<double>> temp(n - 1, vector<double>(n - 1, 0));
+    for (int c = 0; c < n; c++){
+        get_submatrix(mat, temp, 0, c, n);
+
+        D += sign * mat[0][c] * get_determinant(temp, n - 1);
+        sign *= -1;
+    }
+
+    return D;
+}
+
+bool get_inverse(vector<vector<double>> mat, vector<vector<double>> &inverse, int n)
+{
+    double A = get_determinant(mat, n);
+    if (abs(A) < EPSILON){
+        return false;
+    }
+
+    if (n == 1){
+        inverse[0][0] = 1.0 / A;
+        return true;
+    }
+    double inv_det = 1.0 / A;
+    vector<vector<double>> temp(n - 1, vector<double>(n - 1, 0));
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            get_submatrix(mat, temp, i, j, n);
+
+            double minor = get_determinant(temp, n - 1);
+
+            double sign = ((i + j) % 2 == 0 ? 1.0 : -1.0);
+
+            double cofactor = sign * minor;
+
+            inverse[j][i] = cofactor * inv_det;
+        }
+    }
+
+    return true;
+}
+
+void print_matrix(vector<vector<double>> &m, int n){
+    cout << fixed << setprecision(3);
+    for (int i = 0; i < n; i++){
+        cout << "|";
+        for (int j = 0; j < n; j++)
+        {
+            cout << setw(4) << m[i][j] << " ";
+        }
+        cout << "|\n";
+    }
+}
+
+int32_t main(){
+
+    ifstream inputFile("input.txt");
+    if (!inputFile.is_open()){
+        cerr << "Error while opening input file" << endl;
+    }
+
+    ofstream outputFile("output.txt", ios::trunc);
+    if (!inputFile.is_open()){
+        cerr << "Error while opening input file" << endl;
+    }
+
+    int n;
+    // cin>>n;
+    if (!(inputFile >> n)){
+        cerr << "Error in reading matrix dimension N" << endl;
+        inputFile.close();
+        outputFile.close();
+        return 1;
+    }
+
+    vector<vector<double>> matrix(n, vector<double>(n, 0));
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            if (!(inputFile >> matrix[i][j])){
+                cerr << "Error in reading matrix element at (" << i << "," << j << ")" << endl;
+                inputFile.close();
+                outputFile.close();
+                return 1;
+            }
+        }
+    }
+    vector<vector<double>> inverse(n, vector<double>(n, 0));
+    get_inverse(matrix, inverse, n);
+
+    outputFile << fixed << setprecision(3);
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            outputFile << setw(6) << inverse[i][j] << "\t";
+        }
+        outputFile << "\n";
+    }
+    return 0;
+}
+
+```
+
+### Matrix Inversion Input
+
+```
+4
+1 0 0 0
+0 2 0 0
+0 0 3 0
+0 0 0 4
+
+```
+
+### Matrix Inversion Output
+
+```
+ 1.000	-0.000	 0.000	-0.000	
+-0.000	 0.500	-0.000	 0.000	
+ 0.000	-0.000	 0.333	-0.000	
+-0.000	 0.000	-0.000	 0.250	
 
 ```
 
@@ -1780,22 +1950,72 @@ Polynomial Regression: y = 0.0000000000*x^0 + 2.0000000000*x^1
 
 ### RK Method Code
 
-```python
-# Add your code here
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
 
+double dydx(double x, double y){
+    return (x-y)/2.0;
+}
+
+double rkmethod(double x0, double y0, double x, double h){
+
+    int n = (x-x0)/h;
+    double k1, k2, k3, k4;
+    double y = y0;
+    for(int i =0;i<n;i++){
+        k1= h*dydx(x0,y);
+        k2 = h*dydx(x0+0.5*h, y+0.5*k1);
+        k3 = h*dydx(x0+0.5*h, y+0.5*k2);
+        k4 = h*dydx(x0+h, y+k3);
+
+        y = y + (1.0/6.0)*(k1+2*k2+2*k3+k4);
+
+        x0 =x0+h;
+    }
+
+    return y;
+}
+
+int32_t main(){
+    double x0 = 0.0, y0 = 1.0, x =2.0,  h = 0.2;
+    ifstream inputFile("input.txt");
+    ofstream outputFile("output.txt", ios::trunc);
+
+    if(!inputFile.is_open()){
+        cerr<<"Error while opening input file"<<endl;
+        return 1;
+    }
+    if(!(inputFile>>x0>>y0>>x>>h)){
+        cerr<<"Error reading input values"<<endl;
+        inputFile.close();
+        return 1;
+    }
+
+    inputFile.close();
+    if(!outputFile.is_open()){
+        cerr<<"Error while opening output file"<<endl;
+        return 1;
+    }
+    outputFile<<fixed<<setprecision(6);
+    outputFile<<"The value of y at "<<x<<": "<<rkmethod(x0,y0,x,h)<<endl;
+    outputFile.close();
+    
+    return 0;
+}
 ```
 
 ### RK Method Input
 
 ```
-[Add your input format here]
+0.0 1.0 2.0 0.2
 
 ```
 
 ### RK Method Output
 
 ```
-[Add your output format here]
+The value of y at 2.000000: 1.019710
 
 ```
 
