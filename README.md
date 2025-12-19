@@ -112,21 +112,126 @@ This repository contains implementations of various numerical methods for solvin
 
 ### Bisection Code
 ```cpp
-# Add your code here
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+const ld eps = 1e-9;
+
+ld f(ld x, vector<pair<ld, ll>> &poly)
+{
+    ld sum = 0;
+    for (auto [coeff, power] : poly)
+    {
+        sum += coeff * pow(x, power);
+    }
+    return sum;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n;
+    while (cin >> n)
+    {
+        vector<pair<ld, ll>> poly(n + 1);
+        ld an = 0;
+        for (ll i = 0; i <= n; i++)
+        {
+            ld c;
+            ll p;
+            cin >> c >> p;
+            poly[i] = {c, p};
+            if (p == n)
+                an = c;
+        }
+
+        ld xmax = 0;
+        for (auto [c, p] : poly)
+        {
+            if (p != n)
+                xmax = max(xmax, fabsl(c / an));
+        }
+        xmax += 1;
+        ld step;
+        cin >> step;
+        vector<pair<ld, ld>> interval;
+        ld l = -xmax;
+        while (l <= xmax)
+        {
+            while (l + step <= xmax && f(l, poly) * f(l + step, poly) > 0.0)
+            {
+                l += step;
+            }
+            if (l + step <= xmax)
+                interval.push_back({l, l + step});
+            l += step;
+        }
+        for (auto [u, v] : interval)
+        {
+            ll iter = 0;
+            while (u <= v)
+            {
+                iter++;
+                ld mid = (u + v) / 2.0;
+                ld fmid = f(mid, poly);
+
+                if (fabsl(fmid) < eps)
+                {
+                    cout << fixed << setprecision(10);
+                    cout << "Root = " << mid << "  Iterations = " << iter << "\n";
+                    break;
+                }
+
+                if (f(u, poly) * fmid < 0)
+                    v = mid;
+                else
+                    u = mid;
+            }
+        }
+        if (interval.size() != n)
+        {
+            cout << "All other roots are imaginary\n";
+        }
+        cout<<"---------------\n";
+    }
+    return 0;
+}
 
 ```
 
 ### Bisection Input
 
 ```
-[Add your input format here]
+2
+1 2
+0 1
+-4 0
+0.01
+3
+1 3
+0 2
+-1 1
+-2 0
+0.01
 
 ```
 
 ### Bisection Output
 
 ```
-[Add your output format here]
+Root = -1.9999999999  Iterations = 26
+Root = 2.0000000001  Iterations = 26
+---------------
+Root = 1.5213797069  Iterations = 22
+All other roots are imaginary
+---------------
 
 ```
 
@@ -140,22 +245,130 @@ This repository contains implementations of various numerical methods for solvin
 
 ### False Position Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+const ld eps = 1e-9;
+
+ld f(ld x, vector<pair<ld, ll>> &poly)
+{
+    ld sum = 0;
+    for (auto [coeff, power] : poly)
+    {
+        sum += coeff * pow(x, power);
+    }
+    return sum;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n;
+    while (cin >> n)
+    {
+        vector<pair<ld, ll>> poly(n + 1);
+        ld an = 0;
+        for (ll i = 0; i <= n; i++)
+        {
+            ld c;
+            ll p;
+            cin >> c >> p;
+            poly[i] = {c, p};
+            if (p == n)
+                an = c;
+        }
+
+        ld xmax = 0;
+        for (auto [c, p] : poly)
+        {
+            if (p != n)
+                xmax = max(xmax, fabsl(c / an));
+        }
+        xmax += 1;
+        ld step;
+        cin >> step;
+        vector<pair<ld, ld>> interval;
+        ld l = -xmax;
+        while (l <= xmax)
+        {
+            while (l + step <= xmax && f(l, poly) * f(l + step, poly) > 0.0)
+            {
+                l += step;
+            }
+            if (l + step <= xmax)
+                interval.push_back({l, l + step});
+            l += step;
+        }
+        for (auto [u, v] : interval)
+        {
+            ll iter = 0;
+            while (u <= v)
+            {
+                iter++;
+                ld fu = f(u, poly);
+                ld fv = f(v, poly);
+
+                ld mid = (u * fv - v * fu) / (fv - fu);
+                ld fmid = f(mid, poly);
+
+                if (fabsl(fmid) < eps)
+                {
+                    cout << fixed << setprecision(10);
+                    cout << "Root = " << mid << "  Iterations = " << iter << "\n";
+                    break;
+                }
+
+                if (f(u, poly) * fmid < 0)
+                    v = mid;
+                else
+                    u = mid;
+            }
+        }
+        if (interval.size() != n)
+        {
+            cout << "All other roots are imaginary\n";
+        }
+        cout << "---------------\n";
+    }
+    return 0;
+}
 
 ```
 
 ### False Position Input
 
 ```
-[Add your input format here]
+2
+1 2
+0 1
+-4 0
+0.01
+3
+1 3
+0 2
+-1 1
+-2 0
+0.01
 
 ```
 
 ### False Position Output
 
 ```
-[Add your output format here]
+Root = -2.0000000000  Iterations = 1
+Root = 2.0000000000  Iterations = 1
+---------------
+Root = 1.5213797068  Iterations = 4
+All other roots are imaginary
+---------------
 
 ```
 
@@ -169,22 +382,133 @@ This repository contains implementations of various numerical methods for solvin
 
 ### Secant Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+const ld eps = 1e-9;
+// f(x)
+ld f(ld x, vector<pair<ld, ll>> &poly)
+{
+    ld sum = 0;
+    for (auto [coeff, power] : poly)
+    {
+        sum += coeff * pow(x, power);
+    }
+    return sum;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n;
+    while (cin >> n)
+    {
+        vector<pair<ld, ll>> poly(n + 1);
+        ld an = 0;
+        for (ll i = 0; i <= n; i++)
+        {
+            ld c;
+            ll p;
+            cin >> c >> p;
+            poly[i] = {c, p};
+            if (p == n)
+                an = c;
+        }
+
+        ld xmax = 0;
+        for (auto [c, p] : poly)
+        {
+            if (p != n)
+                xmax = max(xmax, fabsl(c / an));
+        }
+        xmax += 1;
+        ld step;
+        cin >> step;
+        vector<pair<ld, ld>> interval;
+        ld l = -xmax;
+        while (l <= xmax)
+        {
+            while (l + step <= xmax && f(l, poly) * f(l + step, poly) > 0.0)
+            {
+                l += step;
+            }
+            if (l + step <= xmax)
+                interval.push_back({l, l + step});
+            l += step;
+        }
+        for (auto [u, v] : interval)
+        {
+            ld x0 = u;
+            ld x1 = v;
+            ll iter = 0;
+
+            while (1)
+            {
+                iter++;
+                ld f0 = f(x0, poly);
+                ld f1 = f(x1, poly);
+
+                if (fabsl(f1 - f0) < eps) // avoid division by zero
+                    break;
+
+                ld x2 = x1 - f1 * (x1 - x0) / (f1 - f0);
+
+                if (fabsl(x2 - x1) < eps)
+                {
+                    cout << fixed << setprecision(10);
+                    cout << "Root = " << x2 << "  Iterations = " << iter << "\n";
+                    break;
+                }
+
+                x0 = x1;
+                x1 = x2;
+            }
+        }
+        if (interval.size() != n)
+        {
+            cout << "All other roots are imaginary\n";
+        }
+        cout << "---------------\n";
+    }
+    return 0;
+}
 
 ```
 
 ### Secant Input
 
 ```
-[Add your input format here]
+2
+1 2
+0 1
+-4 0
+0.01
+3
+1 3
+0 2
+-1 1
+-2 0
+0.01
 
 ```
 
 ### Secant Output
 
 ```
-[Add your output format here]
+Root = -2.0000000000  Iterations = 2
+Root = 2.0000000000  Iterations = 2
+---------------
+Root = 1.5213797068  Iterations = 4
+All other roots are imaginary
+---------------
 
 ```
 
@@ -198,22 +522,141 @@ This repository contains implementations of various numerical methods for solvin
 
 ### Newton Raphson Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+const ld eps = 1e-9;
+//f(x)
+ld f(ld x, vector<pair<ld, ll>> &poly)
+{
+    ld sum = 0;
+    for (auto [coeff, power] : poly)
+    {
+        sum += coeff * pow(x, power);
+    }
+    return sum;
+}
+
+// f'(x)
+ld df(ld x, vector<pair<ld, ll>> &poly)
+{
+    ld sum = 0;
+    for (auto [c, p] : poly)
+    {
+        if (p > 0)
+            sum += c * p * pow(x, p - 1);
+    }
+    return sum;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n;
+    while (cin >> n)
+    {
+        vector<pair<ld, ll>> poly(n + 1);
+        ld an = 0;
+        for (ll i = 0; i <= n; i++)
+        {
+            ld c;
+            ll p;
+            cin >> c >> p;
+            poly[i] = {c, p};
+            if (p == n)
+                an = c;
+        }
+
+        ld xmax = 0;
+        for (auto [c, p] : poly)
+        {
+            if (p != n)
+                xmax = max(xmax, fabsl(c / an));
+        }
+        xmax += 1;
+        ld step;
+        cin >> step;
+        vector<pair<ld, ld>> interval;
+        ld l = -xmax;
+        while (l <= xmax)
+        {
+            while (l + step <= xmax && f(l, poly) * f(l + step, poly) > 0.0)
+            {
+                l += step;
+            }
+            if (l + step <= xmax)
+                interval.push_back({l, l + step});
+            l += step;
+        }
+        for (auto [u, v] : interval)
+        {
+            ld x = u;
+            ll iter = 0;
+
+            while (1) 
+            {
+                iter++;
+                ld fx = f(x, poly);
+                ld dfx = df(x, poly);
+
+                ld x1 = x - fx / dfx;
+
+                if (fabsl(x1 - x) < eps)
+                {
+                    cout << fixed << setprecision(10);
+                    cout << "Root = " << x1
+                         << "  Iterations = " << iter << "\n";
+                    break;
+                }
+
+                x = x1;
+            }
+        }
+        if (interval.size() != n)
+        {
+            cout << "All other roots are imaginary\n";
+        }
+        cout << "---------------\n";
+    }
+    return 0;
+}
 
 ```
 
 ### Newton Raphson Input
 
 ```
-[Add your input format here]
+2
+1 2
+0 1
+-4 0
+0.01
+3
+1 3
+0 2
+-1 1
+-2 0
+0.01
 
 ```
 
 ### Newton Raphson Output
 
 ```
-[Add your output format here]
+Root = -2.0000000000  Iterations = 1
+Root = 2.0000000000  Iterations = 1
+---------------
+Root = 1.5213797068  Iterations = 3
+All other roots are imaginary
+---------------
 
 ```
 
@@ -803,22 +1246,71 @@ Value at 301.000000 : 2.478597
 
 ### Linear Regression Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n;
+    while(cin >> n)
+    {
+        vector<ld> x(n), y(n);
+        for(ll i=0;i<n;i++)
+            cin >> x[i] >> y[i];
+
+        ld sumX=0, sumY=0, sumXY=0, sumX2=0;
+        for(ll i=0;i<n;i++)
+        {
+            sumX += x[i];
+            sumY += y[i];
+            sumXY += x[i]*y[i];
+            sumX2 += x[i]*x[i];
+        }
+
+        ld a = (n*sumXY - sumX*sumY)/(n*sumX2 - sumX*sumX);
+        ld b = (sumY - a*sumX)/n;
+
+        cout << fixed << setprecision(10);
+        cout << "Linear Regression: y = " << a << " * x + " << b << "\n";
+        cout << "---------------\n";
+    }
+    return 0;
+}
 
 ```
 
 ### Linear Regression Input
 
 ```
-[Add your input format here]
+5
+1 2
+2 3
+3 5
+4 4
+5 6
+3
+1 2
+2 4
+3 6
 
 ```
 
 ### Linear Regression Output
 
 ```
-[Add your output format here]
+Linear Regression: y = 0.9000000000 * x + 1.3000000000
+---------------
+Linear Regression: y = 2.0000000000 * x + 0.0000000000
+---------------
 
 ```
 
@@ -832,22 +1324,88 @@ Value at 301.000000 : 2.478597
 
 ### Transcendental Regression Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n;
+    while(cin >> n)
+    {
+        vector<ld> x(n), y(n);
+        for(ll i=0;i<n;i++)
+            cin >> x[i] >> y[i];
+
+        vector<ld> lnY(n);
+        bool valid=true;
+        for(ll i=0;i<n;i++)
+        {
+            if(y[i]<=0) { valid=false; break; }
+            lnY[i] = log(y[i]);
+        }
+
+        if(valid)
+        {
+            ld sumX=0, sumY=0, sumXY=0, sumX2=0;
+            for(ll i=0;i<n;i++)
+            {
+                sumX += x[i];
+                sumY += lnY[i];
+                sumXY += x[i]*lnY[i];
+                sumX2 += x[i]*x[i];
+            }
+
+            ld b = (n*sumXY - sumX*sumY)/(n*sumX2 - sumX*sumX);
+            ld ln_a = (sumY - b*sumX)/n;
+            ld a = exp(ln_a);
+
+            cout << fixed << setprecision(10);
+            cout << "Exponential Regression: y = " << a << " * e^(" << b << "*x)\n";
+        }
+        else
+        {
+            cout << "Exponential Regression: Not valid (y <= 0)\n";
+        }
+
+        cout << "---------------\n";
+    }
+    return 0;
+}
 
 ```
 
 ### Transcendental Regression Input
 
 ```
-[Add your input format here]
+5
+0 1
+1 2.718
+2 7.389
+3 20.085
+4 54.598
+3
+0 2
+1 4
+2 8
 
 ```
 
 ### Transcendental Regression Output
 
 ```
-[Add your output format here]
+Exponential Regression: y = 0.9999575583 * e^(1.0000071456*x)
+---------------
+Exponential Regression: y = 2.0000000000 * e^(0.6931471806*x)
+---------------
 
 ```
 
@@ -861,22 +1419,111 @@ Value at 301.000000 : 2.478597
 
 ### Polynomial Regression Code
 
-```python
-# Add your code here
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+
+vector<ld> gauss(vector<vector<ld>> A, vector<ld> B)
+{
+    ll n = B.size();
+    for(ll i=0;i<n;i++)
+    {
+        ll pivot=i;
+        for(ll j=i+1;j<n;j++)
+            if(fabsl(A[j][i])>fabsl(A[pivot][i])) pivot=j;
+        swap(A[i], A[pivot]);
+        swap(B[i], B[pivot]);
+
+        for(ll j=i+1;j<n;j++)
+        {
+            ld factor = A[j][i]/A[i][i];
+            for(ll k=i;k<n;k++) A[j][k]-=factor*A[i][k];
+            B[j]-=factor*B[i];
+        }
+    }
+
+    vector<ld> X(n);
+    for(ll i=n-1;i>=0;i--)
+    {
+        X[i]=B[i];
+        for(ll j=i+1;j<n;j++) X[i]-=A[i][j]*X[j];
+        X[i]/=A[i][i];
+    }
+    return X;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    ll n;
+    while(cin >> n)
+    {
+        ll degree;
+        cin >> degree;
+        vector<ld> x(n), y(n);
+        for(ll i=0;i<n;i++)
+            cin >> x[i] >> y[i];
+
+        vector<vector<ld>> A(degree+1, vector<ld>(degree+1,0));
+        vector<ld> B(degree+1,0);
+
+        for(ll i=0;i<=degree;i++)
+        {
+            for(ll j=0;j<=degree;j++)
+                for(ll k=0;k<n;k++)
+                    A[i][j] += pow(x[k], i+j);
+
+            for(ll k=0;k<n;k++)
+                B[i] += y[k]*pow(x[k], i);
+        }
+
+        vector<ld> coeff = gauss(A,B);
+
+        cout << fixed << setprecision(10);
+        cout << "Polynomial Regression: y = ";
+        for(ll i=0;i<=degree;i++)
+        {
+            if(i>0) cout << " + ";
+            cout << coeff[i] << "*x^" << i;
+        }
+        cout << "\n";
+        cout << "---------------\n";
+    }
+    return 0;
+}
 
 ```
 
 ### Polynomial Regression Input
 
 ```
-[Add your input format here]
+5 2
+1 1
+2 4
+3 9
+4 16
+5 25
+3 1
+1 2
+2 4
+3 6
 
 ```
 
 ### Polynomial Regression Output
 
 ```
-[Add your output format here]
+Polynomial Regression: y = 0.0000000000*x^0 + -0.0000000000*x^1 + 1.0000000000*x^2
+---------------
+Polynomial Regression: y = 0.0000000000*x^0 + 2.0000000000*x^1
+---------------
 
 ```
 
