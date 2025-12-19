@@ -70,7 +70,7 @@ This repository contains implementations of various numerical methods for solvin
     - [Code](#differentiation-by-forward-interpolation-code)
     - [Input](#differentiation-by-forward-interpolation-input)
     - [Output](#differentiation-by-forward-interpolation-output)
-  - [Differentiation by Forward Interpolation Method](#differentiation-by-backward-interpolation-method)
+  - [Differentiation by Backward Interpolation Method](#differentiation-by-backward-interpolation-method)
     - [Theory](#differentiation-by-backward-interpolation-theory)
     - [Code](#differentiation-by-backward-interpolation-position-code)
     - [Input](#differentiation-by-backward-interpolation-input)
