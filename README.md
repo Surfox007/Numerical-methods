@@ -671,6 +671,7 @@ All other roots are imaginary
 [Add your theory content here]
 
 ### Gauss Elimination Code
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -807,12 +808,10 @@ int main() {
     return 0;
 }
 
-```cpp
-# Add your code here
-
 ```
 
 ### Gauss Elimination Input
+```
 3
 3
 2 1 -1
@@ -827,13 +826,10 @@ int main() {
 1 2
 2 4
 5 11
-
-```
-[Add your input format here]
-
 ```
 
 ### Gauss Elimination Output
+```
 Case #1:
 System Type: UNIQUE SOLUTION
 x1 = 2.000000
@@ -845,11 +841,6 @@ System Type: INFINITE SOLUTIONS
 
 Case #3:
 System Type: NO SOLUTION
-
-
-```
-[Add your output format here]
-
 ```
 
 ---
