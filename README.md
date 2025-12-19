@@ -2399,7 +2399,7 @@ First derivative error  = 0.0000000000%
 Second derivative error = 0.0000000000%
 ---------------
 ```
-###Differentiation by Backward Interpolation
+###Differentiation by Backward Interpolation Method
 
 ###Differentiation Backward Theory
 
